@@ -15,7 +15,14 @@ LogDetect is a GUI-based forensic tool designed to analyze web server and securi
     pip install -r requirements.txt
     ```
 
-## 🚀 How to Run
+## � Web Server Log Analysis Forensic Scenarios
+To run the test cases, download the **Analysis Forensic Scenarios** dataset from Zenodo:
+[https://zenodo.org/records/5779411](https://zenodo.org/records/5779411)
+
+*   **Scenario 1**: Webserver Attack (`scenario1/gather/webserver/logs/apache2`)
+*   **Scenario 2**: Brute Force & IDS (`scenario2/gather/acme_mail/logs` & `scenario2/gather/cloud_share/logs/suricata`)
+
+## �🚀 How to Run
 
 Launch the application using Python:
 
@@ -41,20 +48,19 @@ Follow these steps to verify the tool's functionality with the provided scenario
 
 #### Case A: Authentication Logs (Syslog)
 1.  Click **Select Log File** again.
-2.  Navigate to: `C:\Users\kiddp\Downloads\FORENSIC\scenario2\gather\acme_mail\logs`.
+2.  Navigate to: FORENSIC\scenario2\gather\acme_mail\logs`.
 3.  Select: `auth.log`.
 4.  On the **Analysis Dashboard**, click **Brute Force**.
 5.  *Result*: You should see detection of IP `192.42.1.22` with high authentication failures.
 
 #### Case B: Intrusion Detection (Suricata)
 1.  Click **Select Log File**.
-2.  Navigate to: `C:\Users\kiddp\Downloads\FORENSIC\scenario2\gather\cloud_share\logs\suricata`.
+2.  Navigate to: FORENSIC\scenario2\gather\cloud_share\logs\suricata`.
 3.  Select: `fast.log`.
 4.  On the **Analysis Dashboard**, click **Check IDS Alerts**.
 5.  *Result*: You will see a list of intrusion alerts (e.g., `SURICATA TLS invalid handshake`) and a chart of top source IPs.
 
 ## 📊 Features
 *   **Chain of Custody**: Automatic SHA256 hashing and action logging.
-*   **Modern UI**: Cyberpunk-themed dark mode interface.
 *   **Visualizations**: Downloadable charts for threat analysis.
 *   **Reporting**: Export findings to a text report with one click.
