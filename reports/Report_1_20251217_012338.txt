@@ -1,0 +1,64 @@
+DIGITAL FORENSICS REPORT - LOG ANALYSIS
+=======================================
+Date: 2025-12-17 01:23:38
+Case ID: 1
+Evidence File Hash (SHA256): 8bb49203c4cbfa52331943d5572f6cf7130dc96beb435aa3c951c3d27be9e2b7
+
+EXECUTIVE SUMMARY
+-----------------
+ [i] No significant threats detected. Traffic appears normal.
+
+CHAIN OF CUSTODY
+----------------
+Chain of Custody Log - Case: 1
+Investigator: 1
+==================================================
+[2025-12-17T01:23:10.679366] Case Initialized
+Detail: ID: 1, Investigator: 1
+--------------------
+[2025-12-17T01:23:15.879285] Evidence Acquired
+Detail: File: C:/Users/kiddp/Downloads/FORENSIC/scenario2/gather/cloud_share/logs/suricata/fast.log
+--------------------
+[2025-12-17T01:23:15.880345] Calculated sha256 hash for fast.log: 8bb49203c4cbfa52331943d5572f6cf7130dc96beb435aa3c951c3d27be9e2b7
+--------------------
+[2025-12-17T01:23:15.883420] Log Parsed
+Detail: Rows: 72, Errors: 0
+--------------------
+
+
+ANALYSIS RESULTS
+================
+ [i] Traffic Summary:
+     Total Requests: 72
+     Successful/Benign: 0
+     Failed/Errors: 0
+
+ [!] High Volume IPs (Potential DoS/Scanners):
+No high volume IPs detected.
+
+ [!] Access to Sensitive/Forbidden Files:
+No sensitive file access detected.
+
+ [!] Suspicious User Agents:
+No suspicious user agents detected.
+
+ [!] HTTP Error Codes (4xx/5xx):
+No significant errors found.
+
+ [!] Potential Data Exfiltration (Large Responses):
+No unusually large responses detected.
+
+ [!] Potential Brute Force (High Auth Failures):
+No significant brute force attempts detected.
+
+ [!] Intrusion Detection System (IDS) Alerts:
+            ip                                                                                                                      path  count
+ 172.16.100.38 ET POLICY GNU/Linux APT User-Agent Outbound likely related to package management [Class: Not Suspicious Traffic] [Pri: 3]     44
+ 172.16.100.38                                  SURICATA TLS invalid handshake message [Class: Generic Protocol Command Decode] [Pri: 3]      7
+ 172.16.100.38                                     SURICATA TLS invalid record/traffic [Class: Generic Protocol Command Decode] [Pri: 3]      7
+34.249.145.219                                  SURICATA TLS invalid handshake message [Class: Generic Protocol Command Decode] [Pri: 3]      4
+34.249.145.219                                     SURICATA TLS invalid record/traffic [Class: Generic Protocol Command Decode] [Pri: 3]      4
+ 54.171.230.55                                  SURICATA TLS invalid handshake message [Class: Generic Protocol Command Decode] [Pri: 3]      3
+ 54.171.230.55                                     SURICATA TLS invalid record/traffic [Class: Generic Protocol Command Decode] [Pri: 3]      3
+
+END OF REPORT

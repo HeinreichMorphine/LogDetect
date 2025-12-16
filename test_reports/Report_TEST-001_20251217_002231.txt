@@ -1,0 +1,36 @@
+DIGITAL FORENSICS REPORT - LOG ANALYSIS
+=======================================
+Date: 2025-12-17 00:22:31
+Case ID: TEST-001
+Evidence File Hash (SHA256): DUMMY_HASH
+
+CHAIN OF CUSTODY
+----------------
+Chain of Custody Log - Case: TEST-001
+Investigator: Automated Tester
+==================================================
+
+
+ANALYSIS RESULTS
+================
+ [!] High Volume IPs (Potential DoS/Scanners):
+         ip  count
+192.168.1.5      3
+   10.0.0.1      2
+
+ [!] Access to Sensitive/Forbidden Files:
+                 timestamp       ip method        path  status
+10/Oct/2023:14:00:01 -0700 10.0.0.1    GET /admin/.env     404
+10/Oct/2023:14:05:00 -0700 10.0.0.2    GET /backup.sql     200
+
+ [!] Suspicious User Agents:
+                 timestamp       ip          user_agent        path
+10/Oct/2023:14:00:02 -0700 10.0.0.1 sqlmap/1.5.2#stable  /login.php
+10/Oct/2023:14:05:00 -0700 10.0.0.2         curl/7.68.0 /backup.sql
+
+ [!] HTTP Error Codes (4xx/5xx):
+ status  count
+    404      1
+    500      1
+
+END OF REPORT
