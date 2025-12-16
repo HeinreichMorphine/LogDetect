@@ -64,3 +64,15 @@ Follow these steps to verify the tool's functionality with the provided scenario
 *   **Chain of Custody**: Automatic SHA256 hashing and action logging.
 *   **Visualizations**: Downloadable charts for threat analysis.
 *   **Reporting**: Export findings to a text report with one click.
+
+## 🐛 Reporting Bugs & Updates
+
+### Found a Bug?
+If you encounter any issues or bugs, please report them to the developer or open an Issue on the GitHub repository.
+
+### Updating the Tool
+To ensure you have the latest features and bug fixes, run the following command in the project directory:
+
+```bash
+git pull origin main
+```
