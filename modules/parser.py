@@ -93,10 +93,16 @@ class LogParser:
                     if match:
                         g = match.groups()
                         data.append({
-                            "ip": g[0], "timestamp": self.parse_timestamp(g[3]), "method": g[5],
-                            "path": g[6], "protocol": g[7], "status": int(g[8]),
-                            "size": int(g[9]) if g[9] != '-' else 0,
-                            "referrer": g[10], "user_agent": g[11], "type": "access"
+                            "ip": g[0], 
+                            "timestamp": self.parse_timestamp(g[1]), 
+                            "method": g[2],
+                            "path": g[3], 
+                            "protocol": g[4] if g[4] else "-",
+                            "status": int(g[5]),
+                            "size": int(g[6]) if g[6] != '-' else 0,
+                            "referrer": g[7], 
+                            "user_agent": g[8], 
+                            "type": "access"
                         })
                         continue
 

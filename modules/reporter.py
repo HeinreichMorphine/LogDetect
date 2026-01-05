@@ -7,10 +7,11 @@ class Reporter:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
-    def generate_report(self, case_id, coc_text, file_hash, analysis_results):
+    def generate_report(self, case_id, coc_text, file_hash, analysis_results, integrity_verified=None):
         """
         Generates a summary report.
         analysis_results: dict containing DataFrames or texts for various checks.
+        integrity_verified: bool indicating if pre/post analysis hashes match.
         """
         filename = f"Report_{case_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         file_path = os.path.join(self.output_dir, filename)
@@ -20,7 +21,20 @@ class Reporter:
             f.write(f"=======================================\n")
             f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write(f"Case ID: {case_id}\n")
-            f.write(f"Evidence File Hash (SHA256): {file_hash}\n\n")
+            f.write(f"Evidence File Hash (SHA256): {file_hash}\n")
+            
+            # Integrity Check Section
+            f.write(f"\nEVIDENCE INTEGRITY CHECK\n")
+            f.write(f"------------------------\n")
+            if integrity_verified:
+                f.write(f" [PASS] Post-analysis hash matches original hash.\n")
+                f.write(f"        Evidence integrity has been preserved throughout the analysis.\n")
+            elif integrity_verified is False:
+                f.write(f" [FAIL] Post-analysis hash DOES NOT match original hash!\n")
+                f.write(f"        WARNING: The evidence file may have been modified.\n")
+            else:
+                f.write(f" [N/A]  Post-analysis verification was not performed.\n")
+            f.write(f"\n")
 
             # Executive Summary
             f.write(f"EXECUTIVE SUMMARY\n")
@@ -127,6 +141,17 @@ class Reporter:
                 f.write(ids_alerts.to_string(index=False))
             else:
                 f.write("No IDS alerts detected.")
+            f.write(f"\n\n")
+
+            # Risk Scoring
+            f.write(f" [!] Risk Scoring Analysis (Top Risky IPs):\n")
+            risk = analysis_results.get('risk_score')
+            if risk is not None and not risk.empty:
+                 # Sort by risk_score descending just in case
+                 risk_sorted = risk.sort_values(by='risk_score', ascending=False)
+                 f.write(risk_sorted.to_string(index=False))
+            else:
+                f.write("No risk scores calculated.")
             f.write(f"\n\n")
 
             f.write(f"END OF REPORT\n")

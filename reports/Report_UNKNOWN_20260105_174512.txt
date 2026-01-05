@@ -1,0 +1,98 @@
+DIGITAL FORENSICS REPORT - LOG ANALYSIS
+=======================================
+Date: 2026-01-05 17:45:12
+Case ID: UNKNOWN
+Evidence File Hash (SHA256): dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+
+EVIDENCE INTEGRITY CHECK
+------------------------
+ [PASS] Post-analysis hash matches original hash.
+        Evidence integrity has been preserved throughout the analysis.
+
+EXECUTIVE SUMMARY
+-----------------
+ [!] CRITICAL: Potential Brute Force Attack Patterns Detected
+ [!] HIGH: High Volume Traffic (Possible Denial of Service / Scanner)
+
+CHAIN OF CUSTODY
+----------------
+Chain of Custody Log - Case: UNKNOWN
+Investigator: UNKNOWN
+==================================================
+[2026-01-05T17:42:42.424553] Evidence Acquired
+Detail: File: C:/Users/kiddp/Downloads/FORENSIC/scenario1/gather/webserver/logs/apache2/cloud.company.cyberrange.at-access.log
+--------------------
+[2026-01-05T17:42:42.428786] Calculated sha256 hash for cloud.company.cyberrange.at-access.log: 7bc02fcaa8bd373afc3707e8309222a54331abd68899061f1221050b7b59bc17
+--------------------
+[2026-01-05T17:42:42.436993] Evidence Preserved
+Detail: Copied C:/Users/kiddp/Downloads/FORENSIC/scenario1/gather/webserver/logs/apache2/cloud.company.cyberrange.at-access.log to cases\UNKNOWN\EVIDENCE_cloud.company.cyberrange.at-access.log
+--------------------
+[2026-01-05T17:44:10.285583] Evidence Acquired
+Detail: File: C:/Users/kiddp/Downloads/FORENSIC/scenario2/gather/acme_mail/logs/auth.log
+--------------------
+[2026-01-05T17:44:10.299205] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:44:10.300713] Evidence Preserved
+Detail: Copied C:/Users/kiddp/Downloads/FORENSIC/scenario2/gather/acme_mail/logs/auth.log to cases\UNKNOWN\EVIDENCE_auth.log
+--------------------
+[2026-01-05T17:44:11.695272] Log Parsed
+Detail: Rows: 1188, Errors: 0
+--------------------
+[2026-01-05T17:44:59.904901] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:44:59.904901] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+[2026-01-05T17:45:02.056186] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:45:02.056186] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+[2026-01-05T17:45:11.800635] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:45:11.800635] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+[2026-01-05T17:45:11.981909] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:45:11.981909] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+[2026-01-05T17:45:12.137373] Calculated sha256 hash for auth.log: dd2ebf552767d2f8cd78a22cabf3cbc4051c2e0951bed557f2feed6befa86db3
+--------------------
+[2026-01-05T17:45:12.137373] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+
+
+ANALYSIS RESULTS
+================
+ [i] Traffic Summary:
+     Total Requests: 1188
+     Successful/Benign: 0
+     Failed/Errors: 0
+
+ [!] High Volume IPs (Potential DoS/Scanners):
+     ip  count
+0.0.0.0   1111
+
+ [!] Access to Sensitive/Forbidden Files:
+No sensitive file access detected.
+
+ [!] Suspicious User Agents:
+No suspicious user agents detected.
+
+ [!] HTTP Error Codes (4xx/5xx):
+No significant errors found.
+
+ [!] Potential Data Exfiltration (Large Responses):
+No unusually large responses detected.
+
+ [!] Potential Brute Force (High Auth Failures):
+         ip  count
+192.42.1.22     54
+
+ [!] Intrusion Detection System (IDS) Alerts:
+No IDS alerts detected.
+
+END OF REPORT

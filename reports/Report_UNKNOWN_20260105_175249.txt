@@ -1,0 +1,82 @@
+DIGITAL FORENSICS REPORT - LOG ANALYSIS
+=======================================
+Date: 2026-01-05 17:52:49
+Case ID: UNKNOWN
+Evidence File Hash (SHA256): 7bc02fcaa8bd373afc3707e8309222a54331abd68899061f1221050b7b59bc17
+
+EVIDENCE INTEGRITY CHECK
+------------------------
+ [PASS] Post-analysis hash matches original hash.
+        Evidence integrity has been preserved throughout the analysis.
+
+EXECUTIVE SUMMARY
+-----------------
+ [!] HIGH: High Volume Traffic (Possible Denial of Service / Scanner)
+ [!] HIGH: Potential Data Exfiltration (Large Response Sizes)
+
+CHAIN OF CUSTODY
+----------------
+Chain of Custody Log - Case: UNKNOWN
+Investigator: UNKNOWN
+==================================================
+[2026-01-05T17:52:23.300940] Evidence Acquired
+Detail: File: C:/Users/kiddp/Downloads/FORENSIC/scenario1/gather/webserver/logs/apache2/cloud.company.cyberrange.at-access.log
+--------------------
+[2026-01-05T17:52:23.303635] Calculated sha256 hash for cloud.company.cyberrange.at-access.log: 7bc02fcaa8bd373afc3707e8309222a54331abd68899061f1221050b7b59bc17
+--------------------
+[2026-01-05T17:52:23.310156] Evidence Preserved
+Detail: Copied C:/Users/kiddp/Downloads/FORENSIC/scenario1/gather/webserver/logs/apache2/cloud.company.cyberrange.at-access.log to cases\UNKNOWN\EVIDENCE_cloud.company.cyberrange.at-access.log
+--------------------
+[2026-01-05T17:52:25.348480] Log Parsed
+Detail: Rows: 10050, Errors: 0
+--------------------
+
+
+ANALYSIS RESULTS
+================
+ [i] Traffic Summary:
+     Total Requests: 10050
+     Successful/Benign: 10014
+     Failed/Errors: 36
+
+ [!] High Volume IPs (Potential DoS/Scanners):
+            ip  count
+   172.16.0.27   1926
+172.16.100.151   1912
+  172.16.0.116   1412
+  172.16.0.200   1336
+   172.16.0.11   1184
+   172.16.0.44   1172
+   172.16.0.48    790
+  192.42.1.160    318
+
+ [!] Access to Sensitive/Forbidden Files:
+No sensitive file access detected.
+
+ [!] Suspicious User Agents:
+No suspicious user agents detected.
+
+ [!] HTTP Error Codes (4xx/5xx):
+ status  count
+    404     33
+    500      3
+
+ [!] Potential Data Exfiltration (Large Responses):
+                timestamp             ip method                                                                                               path  status    size
+2021-03-27 09:02:39+00:00 172.16.100.151    GET       /index.php/apps/files/ajax/download.php?dir=%2F&files=Photos&downloadStartSecret=honaae4ls89     200 1022565
+2021-03-27 09:31:20+00:00   172.16.0.116    GET                            /remote.php/webdav/ownCloud%20Manual.pdf?downloadStartSecret=eabfxgzquz     200 6128771
+2021-03-27 09:44:30+00:00   172.16.0.116    GET     /index.php/apps/files/ajax/download.php?dir=%2F&files=Marketing&downloadStartSecret=itbw6rxuzw     200 7480967
+2021-03-27 10:04:56+00:00    172.16.0.44    GET                           /remote.php/webdav/ownCloud%20Manual.pdf?downloadStartSecret=zz7hnjarpdp     200 6128772
+2021-03-27 11:03:17+00:00   172.16.0.200    GET                      /remote.php/webdav/ownCloud%20Manual%20(3).pdf?downloadStartSecret=sdork9zdk5     200 6128791
+2021-03-27 11:07:02+00:00 172.16.100.151    GET       /index.php/apps/files/ajax/download.php?dir=%2F&files=Photos&downloadStartSecret=szhefbmdsqp     200 1022565
+2021-03-27 11:52:46+00:00   172.16.0.200    GET        /index.php/apps/files/ajax/download.php?dir=%2F&files=Photos&downloadStartSecret=uwryt0y6zc     200 1023140
+2021-03-27 14:18:43+00:00   172.16.0.116    GET /index.php/apps/files/ajax/download.php?dir=%2F&files=Photos%20(3)&downloadStartSecret=jxpr2828gvf     200 1023171
+2021-03-27 16:39:10+00:00 172.16.100.151    GET       /index.php/apps/files/ajax/download.php?dir=%2F&files=Photos&downloadStartSecret=7pcffslf0db     200 1023119
+
+ [!] Potential Brute Force (High Auth Failures):
+No significant brute force attempts detected.
+
+ [!] Intrusion Detection System (IDS) Alerts:
+No IDS alerts detected.
+
+END OF REPORT

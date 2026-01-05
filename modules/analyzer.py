@@ -128,3 +128,42 @@ class LogAnalyzer:
         # Count by path (alert message) and IP
         alerts_summary = ids_alerts.groupby(['ip', 'path']).size().reset_index(name='count')
         return alerts_summary
+
+    def calculate_risk_score(self):
+        """Calculate a risk score for each IP address."""
+        if self.df is None or self.df.empty:
+            return pd.DataFrame()
+
+        # Initialize score
+        scores = self.df.groupby('ip').size().reset_index(name='request_count')
+        scores['risk_score'] = 0
+
+        # Factor 1: 4xx Errors (Weight 1)
+        errors_4xx = self.df[(self.df['status'] >= 400) & (self.df['status'] < 500)].groupby('ip').size()
+        scores['risk_score'] += scores['ip'].map(errors_4xx).fillna(0) * 1
+
+        # Factor 2: 5xx Errors (Weight 2)
+        errors_5xx = self.df[self.df['status'] >= 500].groupby('ip').size()
+        scores['risk_score'] += scores['ip'].map(errors_5xx).fillna(0) * 2
+
+        # Factor 3: Suspicious User Agents (Weight 10)
+        sus_uas = self.detect_suspicious_user_agents()
+        if not sus_uas.empty:
+            sus_ip_counts = sus_uas.groupby('ip').size()
+            scores['risk_score'] += scores['ip'].map(sus_ip_counts).fillna(0) * 10
+            
+        # Factor 4: Brute Force (Weight 20)
+        bf_ips = self.detect_brute_force()
+        if not bf_ips.empty:
+             scores.loc[scores['ip'].isin(bf_ips['ip']), 'risk_score'] += 20
+
+        # Assign Severity Label
+        def get_label(score):
+            if score > 100: return 'CRITICAL'
+            if score > 50: return 'HIGH'
+            if score > 20: return 'MEDIUM'
+            if score > 0: return 'LOW'
+            return 'NORMAL'
+
+        scores['severity'] = scores['risk_score'].apply(get_label)
+        return scores.sort_values('risk_score', ascending=False)

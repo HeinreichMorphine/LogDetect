@@ -60,3 +60,27 @@ class EvidenceHandler:
                 text += f"Detail: {entry['description']}\n"
             text += "-" * 20 + "\n"
         return text
+
+    def preserve_evidence(self, source_path):
+        """Create a forensic copy of the evidence in a secure case folder."""
+        try:
+            case_dir = os.path.join("cases", self.case_id)
+            if not os.path.exists(case_dir):
+                os.makedirs(case_dir)
+            
+            filename = os.path.basename(source_path)
+            dest_path = os.path.join(case_dir, f"EVIDENCE_{filename}")
+            
+            # Simple binary copy
+            with open(source_path, 'rb') as src, open(dest_path, 'wb') as dst:
+                dst.write(src.read())
+                
+            self.log_action("Evidence Preserved", f"Copied {source_path} to {dest_path}")
+            return dest_path
+        except Exception as e:
+            self.log_action("Preservation Failed", str(e))
+            raise e
+
+    def hash_string(self, content):
+        """Calculate hash of a string content (for report verification)."""
+        return hashlib.sha256(content.encode('utf-8')).hexdigest()
