@@ -1,3 +1,6 @@
+import socket
+import os
+import datetime
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, ttk
 import tkinter as tk
@@ -44,6 +47,7 @@ class App(ctk.CTk):
         self.df = None
         self.current_file_path = None
         self.file_hash = None
+        self.scan_start_time = None
 
         # Layout Configuration
         self.grid_columnconfigure(1, weight=1)
@@ -163,6 +167,7 @@ class App(ctk.CTk):
     def process_file_load(self):
         try:
             # 1. Calculate Hash & Preserve Evidence (Imp 2)
+            self.scan_start_time = datetime.datetime.now()
             self.evidence_handler.log_action("Evidence Acquired", f"File: {self.current_file_path}")
             self.file_hash = self.evidence_handler.calculate_hash(self.current_file_path)
             self.lbl_hash.configure(text=f"SHA256: {self.file_hash}")
@@ -702,24 +707,41 @@ class App(ctk.CTk):
             'risk_score': self.log_analyzer.calculate_risk_score()
         }
         
-        # 1. Generate Report
-        path = self.reporter.generate_report(self.evidence_handler.case_id, coc, self.file_hash, results, integrity_verified)
-        
-        if path:
-            # 2. Hash Report (Imp 6)
-            try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                report_hash = self.evidence_handler.hash_string(content)
+        # 1. Gather Metadata for PDF Report
+        try:
+            file_size = os.path.getsize(self.current_file_path)
+            hostname = socket.gethostname()
+            
+            scan_end = datetime.datetime.now()
+            duration = "N/A"
+            if self.scan_start_time:
+                delta = scan_end - self.scan_start_time
+                duration = str(delta).split('.')[0] # HH:MM:SS
                 
-                # 3. Save Validation File
-                validation_path = path + ".sha256"
-                with open(validation_path, 'w') as f:
-                    f.write(report_hash)
-                    
-                messagebox.showinfo("Report Generated", f"Report saved to:\n{path}\n\nValidation Hash saved to:\n{validation_path}")
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to hash report: {e}")
+            # 2. Generate PDF Report
+            path = self.reporter.generate_pdf_report(
+                case_id=self.evidence_handler.case_id, 
+                coc_text=coc, 
+                file_hash=self.file_hash, 
+                analysis_results=results, 
+                integrity_verified=integrity_verified,
+                examiner_name=self.evidence_handler.investigator,
+                file_path_evidence=self.current_file_path,
+                file_size=file_size,
+                scan_duration=duration,
+                egress_hash=current_hash if integrity_verified else "HASH_MISMATCH"
+            )
+
+            # Optional: Generate Text backup (per requirements "A CSV/JSON version can be generated alongside")
+            # self.reporter.generate_text_report(self.evidence_handler.case_id, coc, self.file_hash, results, integrity_verified)
+            
+            if path:
+                messagebox.showinfo("Report Generated", f"PDF Report saved to:\n{path}")
+            else:
+                messagebox.showerror("Error", "Failed to generate PDF report.")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to gather report metadata: {e}")
 
 if __name__ == "__main__":
     app = App()
