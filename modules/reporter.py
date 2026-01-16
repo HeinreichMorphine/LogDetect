@@ -204,24 +204,33 @@ class Reporter:
                 elements.append(Paragraph(line, code_style))
         elements.append(Spacer(1, 20))
 
-        # 6. Conclusion & Integrity Verification
-        elements.append(Paragraph("Conclusion & Integrity Verification", header_style))
+        # 6. Conclusion & Hash Analysis
+        elements.append(Paragraph("Conclusion & Hash Analysis", header_style))
         
-        integrity_status = "MATCH" if integrity_verified else "MISMATCH / ERROR"
+        integrity_status = "MATCH" if integrity_verified else "MISMATCH"
         integrity_color = colors.green if integrity_verified else colors.red
         
-        elements.append(Paragraph(f"<b>Final Egress Hash (SHA-256):</b> {egress_hash}", normal_style))
+        # Hash Comparison Table
+        hash_data = [
+            ["Analysis Stage", "Hash Value (SHA-256)", "Status"],
+            ["Pre-Analysis (Ingress)", file_hash, "VERIFIED"],
+            ["Post-Analysis (Egress)", egress_hash, integrity_status]
+        ]
         
-        t_integrity = Table([
-            ["Integrity Check Status", integrity_status]
-        ], colWidths=[150, 350])
-        t_integrity.setStyle(TableStyle([
-            ('BACKGROUND', (1, 0), (1, 0), integrity_color),
-            ('TEXTCOLOR', (1, 0), (1, 0), colors.white),
+        t_hash = Table(hash_data, colWidths=[130, 320, 80])
+        t_hash.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            # Highlight Status Cells
+            ('BACKGROUND', (2, 2), (2, 2), integrity_color),
+            ('TEXTCOLOR', (2, 2), (2, 2), colors.white),
+            ('FONTNAME', (2, 2), (2, 2), 'Helvetica-Bold'),
         ]))
-        elements.append(t_integrity)
+        elements.append(t_hash)
         
         elements.append(Spacer(1, 10))
         elements.append(Paragraph("<i>Disclaimer: This report was generated automatically. No warranties implied.</i>", normal_style))
