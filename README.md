@@ -58,8 +58,6 @@ Follow these steps to verify the tool's functionality with the provided scenario
     *   **Risk Scoring**: Prioritizes threats based on error rates and attack patterns.
     *   **Attack Signatures**: Identifies Directory Traversal and Vulnerability Scanning.
 
-    *   **Attack Signatures**: Identifies Directory Traversal and Vulnerability Scanning.
-
 ## 🔧 Technical Implementation
 
 LogDetect is built using a modular Python architecture to ensure maintainability and forensic integrity.
