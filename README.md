@@ -30,6 +30,8 @@ Launch the application using Python:
 python main.py
 ```
 
+Or simply double-click **`run_logdetect.bat`** to start the tool automatically.
+
 ## 🧪 Test Cases
 
 Follow these steps to verify the tool's functionality with the provided scenario logs.
