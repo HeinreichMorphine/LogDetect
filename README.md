@@ -58,6 +58,25 @@ Follow these steps to verify the tool's functionality with the provided scenario
     *   **Risk Scoring**: Prioritizes threats based on error rates and attack patterns.
     *   **Attack Signatures**: Identifies Directory Traversal and Vulnerability Scanning.
 
+    *   **Attack Signatures**: Identifies Directory Traversal and Vulnerability Scanning.
+
+## 🔧 Technical Implementation
+
+LogDetect is built using a modular Python architecture to ensure maintainability and forensic integrity.
+
+### 🏗️ Architecture Overview
+*   **GUI (`gui/app.py`)**: Built with **CustomTkinter** for a modern, high-DPI compatible interface. It handles user interactions, manages background threads for geolocation pre-fetching, and updates the real-time visual progress bar.
+*   **Analysis Engine (`modules/analyzer.py`)**: The core logic engine. It uses **Pandas** DataFrames for high-performance memory-based processing.
+    *   **Parsing**: Uses Regex to normalize raw logs (Apache, Syslog, Suricata) into structured data.
+    *   **Detection**: Applies heuristic filters to identify DOS attacks, scanning patterns, and high-risk status codes (4xx/5xx).
+    *   **Caching**: Implements a persistent JSON disk cache (`save_cache`, `load_cache`) to store Geolocation data, significantly speeding up subsequent analyses.
+*   **Evidence Handler (`modules/evidence.py`)**: Ensures forensic admissibility.
+    *   **Hashing**: Calculates SHA-256 hashes of files pre- and post-analysis to prove data integrity.
+    *   **Chain of Custody**: Logs every user action (acquisition, transfer, analysis) with timestamps.
+*   **Reporting (`modules/reporter.py`)**:
+    *   **PDF Generation**: Uses **ReportLab** to craft professional forensic reports with tables and metadata.
+    *   **Text Generation**: Exports raw data for external processing.
+
 ## 🐛 Reporting Bugs & Updates
 
 ### Found a Bug?
