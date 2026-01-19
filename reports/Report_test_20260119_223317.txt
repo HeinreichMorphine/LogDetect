@@ -1,0 +1,866 @@
+DIGITAL FORENSICS REPORT - LOG ANALYSIS
+=======================================
+Date: 2026-01-19 22:33:17
+Case ID: test
+Evidence File Hash (SHA256): 23e616a1ed529bab9b20b9bc345d37035061eee971d246102bcc4937e51a039b
+
+EVIDENCE INTEGRITY CHECK
+------------------------
+ [PASS] Post-analysis hash matches original hash.
+        Evidence integrity has been preserved throughout the analysis.
+
+EXECUTIVE SUMMARY
+-----------------
+ [!] HIGH: High Volume Traffic (Possible Denial of Service / Scanner)
+ [!] CRITICAL: Directory Traversal Attempts Detected
+ [!] HIGH: Vulnerability Scanning Patterns Detected
+ [!] CRITICAL: 200 IPs with High/Critical Risk Scores
+
+CHAIN OF CUSTODY
+----------------
+Chain of Custody Log - Case: test
+Investigator: 23
+==================================================
+[2026-01-19T22:29:50.988194] Evidence Acquired
+Detail: File: C:/Users/kiddp/Downloads/FORENSIC/Apache.log
+--------------------
+[2026-01-19T22:29:50.995095] Calculated sha256 hash for Apache.log: 23e616a1ed529bab9b20b9bc345d37035061eee971d246102bcc4937e51a039b
+--------------------
+[2026-01-19T22:29:51.000954] Evidence Preserved
+Detail: Copied C:/Users/kiddp/Downloads/FORENSIC/Apache.log to cases\UNKNOWN\EVIDENCE_Apache.log
+--------------------
+[2026-01-19T22:29:52.547857] Log Parsed
+Detail: Rows: 52004, Errors: 4478
+--------------------
+[2026-01-19T22:29:57.029760] Case Initialized
+Detail: ID: test, Investigator: 23
+--------------------
+[2026-01-19T22:33:16.039431] Calculated sha256 hash for Apache.log: 23e616a1ed529bab9b20b9bc345d37035061eee971d246102bcc4937e51a039b
+--------------------
+[2026-01-19T22:33:16.039431] Integrity Check
+Detail: Post-analysis hash matches original.
+--------------------
+
+
+ANALYSIS RESULTS
+================
+ [i] Traffic Summary:
+     Total Requests: 52004
+     Successful/Benign: 0
+     Failed/Errors: 0
+
+ [!] High Volume:
+             ip  count
+ 218.144.240.75   1002
+210.245.233.251    624
+ 211.99.203.228    440
+  80.55.121.106    322
+   61.152.90.96    315
+  212.45.53.176    299
+    82.177.96.6    289
+    64.6.73.199    276
+   81.114.87.11    274
+    65.19.195.6    262
+  80.55.248.206    258
+ 193.19.219.217    253
+  61.84.135.157    253
+163.117.142.142    253
+   82.66.245.30    253
+ 213.131.241.73    253
+ 219.254.35.101    243
+  200.24.17.195    242
+   64.34.162.99    242
+193.124.133.216    242
+ 209.137.246.36    240
+ 200.99.135.130    240
+ 213.179.232.20    234
+  61.134.40.151    233
+ 213.207.142.62    231
+ 212.243.136.66    231
+ 210.245.188.28    231
+    80.68.92.54    230
+   82.231.38.27    223
+  201.28.43.194    220
+   69.64.38.143    220
+ 66.184.168.195    220
+ 66.225.203.226    220
+ 200.94.105.213    217
+  85.214.20.161    216
+    64.214.80.6    216
+   81.192.114.8    211
+  81.166.103.93    209
+   216.127.92.9    209
+    201.6.53.88    200
+    24.7.41.192    200
+    80.53.47.86    200
+218.106.165.188    198
+ 66.162.153.155    198
+ 82.179.164.139    198
+   204.57.79.90    198
+218.104.211.118    198
+   82.127.23.55    197
+ 220.194.61.230    192
+ 221.221.17.210    191
+   83.84.145.52    187
+   64.182.1.110    187
+   68.96.18.125    187
+   202.133.98.6    184
+   69.13.179.46    176
+   24.72.50.113    176
+  132.208.20.23    176
+ 62.175.253.180    176
+   64.236.104.1    176
+    64.59.72.76    176
+ 84.246.224.180    176
+    81.219.87.4    173
+   194.90.30.83    168
+ 212.34.140.103    168
+    61.19.31.42    165
+   200.69.215.1    165
+144.202.242.108    154
+  66.132.131.11    150
+   62.94.206.86    144
+  61.178.21.180    143
+  85.214.16.149    132
+  216.83.140.52    132
+  210.0.196.236    132
+  212.37.101.68    132
+  66.34.225.128    132
+217.117.141.166    130
+   84.73.105.43    130
+ 213.39.178.230    126
+    83.19.168.2    124
+   212.3.249.71    121
+    80.92.67.10    121
+ 206.161.193.98    121
+ 219.239.227.58    121
+218.232.109.223    115
+ 193.232.254.50    112
+ 216.180.251.58    110
+200.167.140.130    110
+  82.238.44.122    110
+209.250.116.251    105
+
+ [!] Errors:
+None detected.
+
+ [!] Risk Score:
+             ip  request_count  risk_score ioc_match severity
+ 218.144.240.75           1002      2520.0        NO CRITICAL
+ 213.194.182.13             69      2070.0        NO CRITICAL
+   202.133.98.6            184      1380.0        NO CRITICAL
+ 211.99.203.228            440      1200.0        NO CRITICAL
+  218.106.69.52             69      1150.0        NO CRITICAL
+    82.177.96.6            289      1070.0        NO CRITICAL
+   61.152.90.96            315      1000.0        NO CRITICAL
+   82.231.38.27            223       890.0        NO CRITICAL
+218.232.109.223            115       690.0        NO CRITICAL
+  61.84.135.157            253       690.0        NO CRITICAL
+ 213.131.241.73            253       690.0        NO CRITICAL
+163.117.142.142            253       690.0        NO CRITICAL
+   82.66.245.30            253       690.0        NO CRITICAL
+ 193.19.219.217            253       690.0        NO CRITICAL
+   81.192.114.8            211       690.0        NO CRITICAL
+    201.6.53.88            200       670.0        NO CRITICAL
+ 219.254.35.101            243       670.0        NO CRITICAL
+   64.34.162.99            242       660.0        NO CRITICAL
+ 213.179.232.20            234       660.0        NO CRITICAL
+  200.24.17.195            242       660.0        NO CRITICAL
+193.124.133.216            242       660.0        NO CRITICAL
+  61.134.40.151            233       660.0        NO CRITICAL
+ 212.243.136.66            231       630.0        NO CRITICAL
+ 213.207.142.62            231       630.0        NO CRITICAL
+ 210.245.188.28            231       630.0        NO CRITICAL
+ 193.77.212.241             62       620.0        NO CRITICAL
+ 66.184.168.195            220       600.0        NO CRITICAL
+ 66.225.203.226            220       600.0        NO CRITICAL
+  201.28.43.194            220       600.0        NO CRITICAL
+   69.64.38.143            220       600.0        NO CRITICAL
+203.112.195.156             40       580.0        NO CRITICAL
+ 200.94.105.213            217       580.0        NO CRITICAL
+  81.166.103.93            209       570.0        NO CRITICAL
+    24.7.41.192            200       570.0        NO CRITICAL
+   216.127.92.9            209       570.0        NO CRITICAL
+218.104.211.118            198       540.0        NO CRITICAL
+ 221.221.17.210            191       540.0        NO CRITICAL
+ 82.179.164.139            198       540.0        NO CRITICAL
+218.106.165.188            198       540.0        NO CRITICAL
+ 66.162.153.155            198       540.0        NO CRITICAL
+   204.57.79.90            198       540.0        NO CRITICAL
+    61.19.31.42            165       540.0        NO CRITICAL
+ 220.194.61.230            192       520.0        NO CRITICAL
+   64.182.1.110            187       510.0        NO CRITICAL
+    81.219.87.4            173       510.0        NO CRITICAL
+   68.96.18.125            187       510.0        NO CRITICAL
+   83.84.145.52            187       510.0        NO CRITICAL
+   69.13.179.46            176       480.0        NO CRITICAL
+ 62.175.253.180            176       480.0        NO CRITICAL
+  132.208.20.23            176       480.0        NO CRITICAL
+  61.178.21.180            143       480.0        NO CRITICAL
+    64.59.72.76            176       480.0        NO CRITICAL
+ 84.246.224.180            176       480.0        NO CRITICAL
+   64.236.104.1            176       480.0        NO CRITICAL
+   24.72.50.113            176       480.0        NO CRITICAL
+ 193.232.254.50            112       460.0        NO CRITICAL
+210.115.233.107             92       460.0        NO CRITICAL
+   200.69.215.1            165       450.0        NO CRITICAL
+ 213.39.178.230            126       430.0        NO CRITICAL
+  202.64.47.171             84       420.0        NO CRITICAL
+144.202.242.108            154       420.0        NO CRITICAL
+ 216.138.114.25             88       390.0        NO CRITICAL
+  85.214.16.149            132       360.0        NO CRITICAL
+  59.120.212.70             48       360.0        NO CRITICAL
+  66.34.225.128            132       360.0        NO CRITICAL
+  210.0.196.236            132       360.0        NO CRITICAL
+   84.73.105.43            130       360.0        NO CRITICAL
+  216.83.140.52            132       360.0        NO CRITICAL
+   212.3.249.71            121       330.0        NO CRITICAL
+    80.92.67.10            121       330.0        NO CRITICAL
+ 84.174.247.181             38       330.0        NO CRITICAL
+ 206.161.193.98            121       330.0        NO CRITICAL
+ 219.239.227.58            121       310.0        NO CRITICAL
+  82.238.44.122            110       300.0        NO CRITICAL
+200.167.140.130            110       300.0        NO CRITICAL
+ 202.107.54.186             99       270.0        NO CRITICAL
+ 149.132.103.59             99       270.0        NO CRITICAL
+  131.178.5.110             99       270.0        NO CRITICAL
+  65.110.43.170             99       270.0        NO CRITICAL
+  212.14.10.200             99       270.0        NO CRITICAL
+     222.66.5.9             26       260.0        NO CRITICAL
+  61.199.234.98             88       240.0        NO CRITICAL
+ 203.221.23.212             88       240.0        NO CRITICAL
+ 82.194.166.242             23       230.0        NO CRITICAL
+ 81.214.165.213             23       230.0        NO CRITICAL
+148.245.179.132             23       230.0        NO CRITICAL
+ 211.138.105.36             23       230.0        NO CRITICAL
+   148.233.91.2             23       230.0        NO CRITICAL
+ 213.166.10.196             46       230.0        NO CRITICAL
+   218.154.80.8             23       230.0        NO CRITICAL
+   59.37.82.101             22       220.0        NO CRITICAL
+  202.141.25.89             55       210.0        NO CRITICAL
+   151.36.65.82             56       210.0        NO CRITICAL
+ 81.240.219.170             21       200.0        NO CRITICAL
+  203.172.129.2             20       200.0        NO CRITICAL
+212.238.198.203             20       200.0        NO CRITICAL
+   68.90.77.146             13       190.0        NO CRITICAL
+   220.93.65.11             13       190.0        NO CRITICAL
+    61.109.45.7             13       190.0        NO CRITICAL
+221.221.159.103             13       190.0        NO CRITICAL
+ 221.215.149.42             13       190.0        NO CRITICAL
+  70.113.52.160             13       190.0        NO CRITICAL
+ 221.208.150.30             13       190.0        NO CRITICAL
+  221.15.35.126             13       190.0        NO CRITICAL
+  221.146.1.119             13       190.0        NO CRITICAL
+    66.56.19.78             13       190.0        NO CRITICAL
+  70.111.95.205             13       190.0        NO CRITICAL
+220.176.190.155             13       190.0        NO CRITICAL
+   219.77.36.81             13       190.0        NO CRITICAL
+   61.185.32.30             13       190.0        NO CRITICAL
+   61.151.191.3             13       190.0        NO CRITICAL
+ 219.236.211.74             13       190.0        NO CRITICAL
+  219.218.0.118             13       190.0        NO CRITICAL
+  218.90.168.42             13       190.0        NO CRITICAL
+    71.16.50.10             13       190.0        NO CRITICAL
+  222.134.69.86             13       190.0        NO CRITICAL
+    68.45.54.57             13       190.0        NO CRITICAL
+   60.176.80.31             13       190.0        NO CRITICAL
+     64.86.51.2             13       190.0        NO CRITICAL
+  69.218.26.212             13       190.0        NO CRITICAL
+ 24.167.104.187             13       190.0        NO CRITICAL
+  68.251.32.120             13       190.0        NO CRITICAL
+   70.111.92.26             13       190.0        NO CRITICAL
+  71.109.224.84             13       190.0        NO CRITICAL
+ 68.161.247.244             13       190.0        NO CRITICAL
+ 24.163.159.161             13       190.0        NO CRITICAL
+    67.84.82.90             13       190.0        NO CRITICAL
+  24.130.216.40             13       190.0        NO CRITICAL
+  24.119.94.130             13       190.0        NO CRITICAL
+   24.10.57.249             13       190.0        NO CRITICAL
+   66.217.34.41             13       190.0        NO CRITICAL
+  66.217.35.113             13       190.0        NO CRITICAL
+  66.217.36.212             13       190.0        NO CRITICAL
+  61.142.136.20             13       190.0        NO CRITICAL
+ 218.27.150.162             13       190.0        NO CRITICAL
+ 67.188.226.192             13       190.0        NO CRITICAL
+218.153.178.199             13       190.0        NO CRITICAL
+218.169.115.156             13       190.0        NO CRITICAL
+  218.24.170.69             13       190.0        NO CRITICAL
+218.103.154.227             13       190.0        NO CRITICAL
+  81.66.182.131             13       190.0        NO CRITICAL
+ 218.26.162.216             13       190.0        NO CRITICAL
+ 194.106.165.14             13       190.0        NO CRITICAL
+ 193.224.164.47             13       190.0        NO CRITICAL
+ 172.152.131.48             13       190.0        NO CRITICAL
+172.144.159.155             13       190.0        NO CRITICAL
+  218.26.222.13             13       190.0        NO CRITICAL
+    67.49.8.195             13       190.0        NO CRITICAL
+    213.56.42.7             13       190.0        NO CRITICAL
+ 212.217.69.154             13       190.0        NO CRITICAL
+  218.58.136.11             13       190.0        NO CRITICAL
+   211.9.156.77             13       190.0        NO CRITICAL
+ 201.138.209.64             13       190.0        NO CRITICAL
+  218.63.109.81             13       190.0        NO CRITICAL
+ 83.112.146.206             13       190.0        NO CRITICAL
+  85.226.115.57             13       190.0        NO CRITICAL
+     83.114.8.4             13       190.0        NO CRITICAL
+  209.6.238.179             13       190.0        NO CRITICAL
+ 218.169.113.79             13       190.0        NO CRITICAL
+ 213.203.171.98             66       180.0        NO CRITICAL
+ 203.242.62.249             11       170.0        NO CRITICAL
+  218.10.61.141             11       160.0        NO CRITICAL
+221.201.194.165             12       160.0        NO CRITICAL
+ 218.244.197.34             11       160.0        NO CRITICAL
+   85.178.97.34             55       150.0        NO CRITICAL
+ 61.172.105.102             15       150.0        NO CRITICAL
+   216.72.4.139             28       150.0        NO CRITICAL
+  203.153.245.2             55       150.0        NO CRITICAL
+  202.152.39.26             55       150.0        NO CRITICAL
+   64.231.89.20             55       150.0        NO CRITICAL
+   81.80.26.178             39       150.0        NO CRITICAL
+ 200.29.167.105             52       150.0        NO CRITICAL
+200.168.190.201             14       140.0        NO CRITICAL
+  84.156.18.157             30       140.0        NO CRITICAL
+ 83.211.241.186             44       120.0        NO CRITICAL
+220.134.161.152             19       110.0        NO CRITICAL
+  84.155.141.86             17       110.0        NO CRITICAL
+  218.58.63.241              9       100.0        NO     HIGH
+ 220.130.208.19             10       100.0        NO     HIGH
+  218.87.132.28              9       100.0        NO     HIGH
+  62.111.137.34             33        90.0        NO     HIGH
+ 68.236.170.254              8        90.0        NO     HIGH
+   219.48.96.72             33        90.0        NO     HIGH
+  62.221.237.83              2        80.0        NO     HIGH
+161.106.192.101              8        80.0        NO     HIGH
+   65.69.85.193              8        70.0        NO     HIGH
+ 202.118.167.71              7        70.0        NO     HIGH
+  209.79.148.66              7        70.0        NO     HIGH
+   67.174.75.74             15        70.0        NO     HIGH
+   65.69.87.247              6        60.0        NO     HIGH
+  66.64.221.234              8        60.0        NO     HIGH
+  84.156.22.180              7        60.0        NO     HIGH
+200.123.168.156              6        60.0        NO     HIGH
+  62.15.142.233             22        60.0        NO     HIGH
+ 66.234.217.195              2        60.0        NO     HIGH
+ 81.171.132.146              4        60.0        NO     HIGH
+  210.91.137.35              7        60.0        NO     HIGH
+ 81.215.229.246              2        60.0        NO     HIGH
+  218.26.165.18              7        60.0        NO     HIGH
+   61.145.98.31              6        60.0        NO     HIGH
+ 61.145.100.217              5        50.0        NO   MEDIUM
+   64.147.69.59              1        40.0        NO   MEDIUM
+   64.60.251.53              1        40.0        NO   MEDIUM
+ 213.205.73.192              1        40.0        NO   MEDIUM
+ 12.216.230.125              1        40.0        NO   MEDIUM
+  80.55.222.242              4        40.0        NO   MEDIUM
+ 220.228.80.199              1        40.0        NO   MEDIUM
+ 63.197.230.242              1        40.0        NO   MEDIUM
+  207.181.126.3              1        40.0        NO   MEDIUM
+  218.78.247.22              4        40.0        NO   MEDIUM
+     61.72.66.8              1        40.0        NO   MEDIUM
+  66.249.192.16              1        30.0        NO   MEDIUM
+ 66.234.205.176              1        30.0        NO   MEDIUM
+  218.78.247.25              3        30.0        NO   MEDIUM
+  66.249.193.73              1        30.0        NO   MEDIUM
+ 66.249.194.131              1        30.0        NO   MEDIUM
+  66.249.194.21              1        30.0        NO   MEDIUM
+  66.211.138.29             11        30.0        NO   MEDIUM
+ 66.201.171.199              1        30.0        NO   MEDIUM
+ 68.110.174.147              2        30.0        NO   MEDIUM
+  218.78.247.23              3        30.0        NO   MEDIUM
+  67.166.180.23              2        30.0        NO   MEDIUM
+   211.21.77.62              3        30.0        NO   MEDIUM
+   61.88.122.10              2        30.0        NO   MEDIUM
+   61.70.233.24             11        30.0        NO   MEDIUM
+ 210.22.201.117              2        30.0        NO   MEDIUM
+   200.75.61.74             11        30.0        NO   MEDIUM
+ 210.22.201.120              2        30.0        NO   MEDIUM
+ 210.22.201.121              2        30.0        NO   MEDIUM
+ 84.179.245.185             11        30.0        NO   MEDIUM
+  64.237.134.68              1        30.0        NO   MEDIUM
+ 210.22.201.124              1        30.0        NO   MEDIUM
+ 210.22.201.122              1        30.0        NO   MEDIUM
+   64.168.33.52              3        30.0        NO   MEDIUM
+  64.110.21.157              1        30.0        NO   MEDIUM
+220.246.168.124              3        20.0        NO      LOW
+220.113.173.164              4        20.0        NO      LOW
+ 210.22.201.118              2        20.0        NO      LOW
+ 63.203.254.140              2        20.0        NO      LOW
+  218.78.247.21              2        20.0        NO      LOW
+  62.118.19.122              4        20.0        NO      LOW
+ 66.173.222.134              4        20.0        NO      LOW
+ 218.169.108.93              2        20.0        NO      LOW
+  68.218.115.44              2        20.0        NO      LOW
+  68.47.134.229              2        10.0        NO      LOW
+ 71.208.206.178              2        10.0        NO      LOW
+  85.204.240.91              2        10.0        NO      LOW
+  68.251.66.100              1        10.0        NO      LOW
+   85.69.89.232              1        10.0        NO      LOW
+   68.251.35.98              1        10.0        NO      LOW
+  83.173.150.63              2        10.0        NO      LOW
+ 81.182.193.240              2        10.0        NO      LOW
+    84.54.10.76              2        10.0        NO      LOW
+   86.107.33.20              2        10.0        NO      LOW
+ 66.188.165.221              2        10.0        NO      LOW
+ 209.195.166.17              1        10.0        NO      LOW
+  218.78.247.28              1        10.0        NO      LOW
+  218.78.247.26              1        10.0        NO      LOW
+  218.78.247.24              1        10.0        NO      LOW
+218.157.154.234              2        10.0        NO      LOW
+   66.178.23.14              2        10.0        NO      LOW
+216.204.128.187              1        10.0        NO      LOW
+   213.61.135.6              1        10.0        NO      LOW
+ 211.211.14.224              2        10.0        NO      LOW
+ 210.22.201.125              1        10.0        NO      LOW
+ 210.22.201.119              2        10.0        NO      LOW
+ 208.36.232.200              2        10.0        NO      LOW
+  220.79.229.83              2        10.0        NO      LOW
+  207.38.249.20              2        10.0        NO      LOW
+ 201.252.246.11              1        10.0        NO      LOW
+  201.17.145.38              2        10.0        NO      LOW
+ 200.179.209.50              2        10.0        NO      LOW
+ 200.172.22.150              2        10.0        NO      LOW
+200.162.114.135              1        10.0        NO      LOW
+ 198.180.132.39              2        10.0        NO      LOW
+ 150.161.187.25              2        10.0        NO      LOW
+ 140.127.43.231              2        10.0        NO      LOW
+ 140.127.43.150              2        10.0        NO      LOW
+  218.78.247.29              1        10.0        NO      LOW
+ 218.148.201.23              2        10.0        NO      LOW
+   61.19.188.17              2        10.0        NO      LOW
+   65.69.86.207              1        10.0        NO      LOW
+  62.118.216.54              2        10.0        NO      LOW
+  65.199.19.164              2        10.0        NO      LOW
+ 61.109.224.194              2        10.0        NO      LOW
+ 61.142.124.106              1        10.0        NO      LOW
+   64.52.185.24              2        10.0        NO      LOW
+ 62.212.108.245              1        10.0        NO      LOW
+  63.160.17.140              2        10.0        NO      LOW
+  63.166.242.60              2        10.0        NO      LOW
+  63.99.211.195              1        10.0        NO      LOW
+  63.199.49.133             68         0.0        NO   NORMAL
+209.250.116.251            105         0.0        NO   NORMAL
+    83.19.168.2            124         0.0        NO   NORMAL
+   62.94.206.86            144         0.0        NO   NORMAL
+ 209.137.246.36            240         0.0        NO   NORMAL
+  80.55.248.206            258         0.0        NO   NORMAL
+ 200.99.135.130            240         0.0        NO   NORMAL
+    64.214.80.6            216         0.0        NO   NORMAL
+    64.6.73.199            276         0.0        NO   NORMAL
+    65.19.195.6            262         0.0        NO   NORMAL
+   194.90.30.83            168         0.0        NO   NORMAL
+  85.214.20.161            216         0.0        NO   NORMAL
+  66.132.131.11            150         0.0        NO   NORMAL
+210.111.138.120             64         0.0        NO   NORMAL
+ 211.154.174.50             59         0.0        NO   NORMAL
+   69.95.94.130             53         0.0        NO   NORMAL
+ 216.180.251.58            110         0.0        NO   NORMAL
+  80.55.121.106            322         0.0        NO   NORMAL
+   81.114.87.11            274         0.0        NO   NORMAL
+ 81.115.141.138             58         0.0        NO   NORMAL
+    80.53.47.86            200         0.0        NO   NORMAL
+ 81.169.128.235             69         0.0        NO   NORMAL
+    60.63.64.40             74         0.0        NO   NORMAL
+   70.17.255.43             66         0.0        NO   NORMAL
+217.117.141.166            130         0.0        NO   NORMAL
+ 81.245.141.174             78         0.0        NO   NORMAL
+210.245.233.251            624         0.0        NO   NORMAL
+ 81.255.106.210             64         0.0        NO   NORMAL
+   81.29.195.58             70         0.0        NO   NORMAL
+    61.66.208.8             65         0.0        NO   NORMAL
+  212.45.53.176            299         0.0        NO   NORMAL
+   82.127.23.55            197         0.0        NO   NORMAL
+  212.37.101.68            132         0.0        NO   NORMAL
+ 212.34.140.103            168         0.0        NO   NORMAL
+    80.68.92.54            230         0.0        NO   NORMAL
+        0.0.0.0          20889         0.0        NO   NORMAL
+
+ [!] Directory Traversal:
+             ip  traversal_attempts_count                                                                                                 sample_payload
+ 213.194.182.13                        69                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  218.106.69.52                        23                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+203.112.195.156                        15                                                             File does not exist: /var/www/html/scripts/..%5c..
+   24.10.57.249                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  70.111.95.205                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   66.217.34.41                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  71.109.224.84                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  24.119.94.130                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 83.112.146.206                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+172.144.159.155                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   60.176.80.31                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  222.134.69.86                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+     83.114.8.4                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 68.161.247.244                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    67.49.8.195                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  219.218.0.118                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  24.130.216.40                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.63.109.81                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   61.151.191.3                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  221.146.1.119                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+     64.86.51.2                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   68.90.77.146                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    66.56.19.78                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 172.152.131.48                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 203.242.62.249                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   220.93.65.11                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+218.153.178.199                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  66.217.35.113                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  209.6.238.179                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.58.136.11                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 221.208.150.30                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.26.222.13                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.90.168.42                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  70.113.52.160                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  221.15.35.126                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+218.103.154.227                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    213.56.42.7                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    67.84.82.90                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  66.217.36.212                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   219.77.36.81                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   211.9.156.77                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 67.188.226.192                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 219.236.211.74                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 201.138.209.64                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    68.45.54.57                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 24.167.104.187                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 193.224.164.47                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+220.176.190.155                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    61.109.45.7                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 194.106.165.14                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  81.66.182.131                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  85.226.115.57                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   70.111.92.26                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+   61.185.32.30                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 221.215.149.42                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  69.218.26.212                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 218.27.150.162                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 218.169.113.79                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+218.169.115.156                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.24.170.69                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+    71.16.50.10                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  68.251.32.120                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 218.26.162.216                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 212.217.69.154                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+221.221.159.103                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 24.163.159.161                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+  61.142.136.20                         5                                                             File does not exist: /var/www/html/scripts/..%5c..
+221.201.194.165                         4                                                             File does not exist: /var/www/html/scripts/..%5c..
+  218.10.61.141                         4                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 218.244.197.34                         4                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 68.236.170.254                         3                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  218.87.132.28                         2                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 81.215.229.246                         2                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+ 66.234.217.195                         2                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  62.221.237.83                         2                                  Invalid method in request get /scripts/..%35c../winnt/system32/cmd.exe?/c+dir
+  66.64.221.234                         2                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+ 81.171.132.146                         2                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  218.58.63.241                         2                                                             File does not exist: /var/www/html/scripts/..%5c..
+   61.88.122.10                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+ 213.205.73.192                         1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+ 210.22.201.124                         1                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 210.22.201.120                         1                                                        File does not exist: /var/www/html/scripts/..\xc1\x1c..
+ 210.22.201.122                         1                                                        File does not exist: /var/www/html/scripts/..\xc0\xaf..
+ 210.22.201.117                         1                                                        File does not exist: /var/www/html/scripts/..\xc1\x9c..
+ 210.22.201.121                         1                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 66.234.205.176                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+ 66.249.194.131                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+   64.147.69.59                         1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+  207.181.126.3                         1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+ 12.216.230.125                         1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+  64.110.21.157                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+   64.60.251.53                         1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+ 220.228.80.199                         1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+   65.69.85.193                         1                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 63.197.230.242                         1                                Invalid method in request get /scripts/..%c1%9c../winnt/system32/cmd.exe?/c+dir
+ 66.201.171.199                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  67.166.180.23                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  66.249.194.21                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+   64.168.33.52                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  64.237.134.68                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+   65.69.87.247                         1                                                             File does not exist: /var/www/html/scripts/..%5c..
+ 68.110.174.147                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+  218.26.165.18                         1                                                             File does not exist: /var/www/html/scripts/..%5c..
+  66.249.193.73                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+     61.72.66.8                         1                                   Invalid method in request get /scripts/..%5c../winnt/system32/cmd.exe?/c+dir
+  66.249.192.16                         1                                                          File does not exist: /var/www/html/scripts/..%5c%5c..
+
+ [!] Vuln Scanning:
+             ip  scan_attempts_count                                                                                                  sample_target
+ 218.144.240.75                  252                                                                  File does not exist: /var/www/html/awstats.pl
+   202.133.98.6                  138                                                   script not found or unable to stat: /var/www/cgi-bin/awstats
+ 211.99.203.228                  120                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    82.177.96.6                  107                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   61.152.90.96                  100                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+   82.231.38.27                   89                                                          File does not exist: /var/www/html/awstats/awstats.pl
+218.232.109.223                   69                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+  61.84.135.157                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   81.192.114.8                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+163.117.142.142                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 193.19.219.217                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 213.131.241.73                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   82.66.245.30                   69                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    201.6.53.88                   67                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+ 219.254.35.101                   67                                                          File does not exist: /var/www/html/awstats/awstats.pl
+193.124.133.216                   66                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  200.24.17.195                   66                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 213.179.232.20                   66                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   64.34.162.99                   66                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  61.134.40.151                   66                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 210.245.188.28                   63                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 212.243.136.66                   63                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 213.207.142.62                   63                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 193.77.212.241                   62                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+   69.64.38.143                   60                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 66.184.168.195                   60                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 66.225.203.226                   60                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  201.28.43.194                   60                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 200.94.105.213                   58                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+   216.127.92.9                   57                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    24.7.41.192                   57                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  81.166.103.93                   57                                                          File does not exist: /var/www/html/awstats/awstats.pl
+218.104.211.118                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 82.179.164.139                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 66.162.153.155                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+218.106.165.188                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 221.221.17.210                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   204.57.79.90                   54                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    61.19.31.42                   54                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+ 220.194.61.230                   52                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   64.182.1.110                   51                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   83.84.145.52                   51                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    81.219.87.4                   51                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   68.96.18.125                   51                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  61.178.21.180                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   69.13.179.46                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    64.59.72.76                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 84.246.224.180                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  132.208.20.23                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   64.236.104.1                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   24.72.50.113                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 62.175.253.180                   48                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 193.232.254.50                   46                                                          File does not exist: /var/www/html/awstats/awstats.pl
+210.115.233.107                   46                                                   script not found or unable to stat: /var/www/cgi-bin/awstats
+  218.106.69.52                   46                                                                       File does not exist: /var/www/html/msadc
+   200.69.215.1                   45                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 213.39.178.230                   43                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  202.64.47.171                   42                                                          File does not exist: /var/www/html/awstats/awstats.pl
+144.202.242.108                   42                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 216.138.114.25                   39                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  59.120.212.70                   36                                                   script not found or unable to stat: /var/www/cgi-bin/awstats
+  66.34.225.128                   36                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   84.73.105.43                   36                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+  216.83.140.52                   36                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  85.214.16.149                   36                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  210.0.196.236                   36                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 206.161.193.98                   33                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    80.92.67.10                   33                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   212.3.249.71                   33                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 84.174.247.181                   33                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 219.239.227.58                   31                                                          File does not exist: /var/www/html/awstats/awstats.pl
+200.167.140.130                   30                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  82.238.44.122                   30                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  65.110.43.170                   27                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  212.14.10.200                   27                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  131.178.5.110                   27                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 149.132.103.59                   27                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 202.107.54.186                   27                                                          File does not exist: /var/www/html/awstats/awstats.pl
+     222.66.5.9                   26                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  61.199.234.98                   24                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 203.221.23.212                   24                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   218.154.80.8                   23                                                    script not found or unable to stat: /var/www/cgi-bin/ip.cgi
+ 81.214.165.213                   23                                                                    File does not exist: /var/www/html/_vti_bin
+   148.233.91.2                   23                                                    script not found or unable to stat: /var/www/cgi-bin/ip.cgi
+ 211.138.105.36                   23                                                   script not found or unable to stat: /var/www/cgi-bin/jud.cgi
+ 82.194.166.242                   23                                                script not found or unable to stat: /var/www/cgi-bin/textenv.pl
+148.245.179.132                   23                                             script not found or unable to stat: /var/www/cgi-bin/proxycheck.pl
+ 213.166.10.196                   23                                                 script not found or unable to stat: /var/www/cgi-bin/WebApp.pl
+   59.37.82.101                   22                                                 script not found or unable to stat: /var/www/cgi-bin/proxy.cgi
+   151.36.65.82                   21                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  202.141.25.89                   21                                                          File does not exist: /var/www/html/awstats/awstats.pl
+212.238.198.203                   20                                               script not found or unable to stat: /var/www/cgi-bin/openwebmail
+ 81.240.219.170                   20                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  203.172.129.2                   20                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 213.203.171.98                   18                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  202.152.39.26                   15                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+   85.178.97.34                   15                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  203.153.245.2                   15                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 200.29.167.105                   15                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+ 61.172.105.102                   15                                                script not found or unable to stat: /var/www/cgi-bin/prxjdg.cgi
+   81.80.26.178                   15                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   216.72.4.139                   15                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   64.231.89.20                   15                                                          File does not exist: /var/www/html/awstats/awstats.pl
+200.168.190.201                   14                                               script not found or unable to stat: /var/www/cgi-bin/openwebmail
+  84.156.18.157                   14                                                          File does not exist: /var/www/html/awstats/awstats.pl
+203.112.195.156                   13                                                            File does not exist: /var/www/html/scripts/root.exe
+ 83.211.241.186                   12                                                script not found or unable to stat: /var/www/cgi-bin/awstats.pl
+  84.155.141.86                   11                                                          File does not exist: /var/www/html/awstats/awstats.pl
+220.134.161.152                   11                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 220.130.208.19                   10                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   219.48.96.72                    9                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  62.111.137.34                    9                                                          File does not exist: /var/www/html/awstats/awstats.pl
+161.106.192.101                    8                                               script not found or unable to stat: /var/www/cgi-bin/openwebmail
+  209.79.148.66                    7                                               script not found or unable to stat: /var/www/cgi-bin/openwebmail
+   67.174.75.74                    7                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 202.118.167.71                    7                                                         Invalid method in request get /scripts/root.exe?/c+dir
+   61.145.98.31                    6                                                   script not found or unable to stat: /var/www/cgi-bin/jud.cgi
+200.123.168.156                    6                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  210.91.137.35                    6                                                                    File does not exist: /var/www/html/_vti_bin
+  84.156.22.180                    6                                                   script not found or unable to stat: /var/www/cgi-bin/awstats
+  62.15.142.233                    6                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 61.145.100.217                    5                                                   script not found or unable to stat: /var/www/cgi-bin/jud.cgi
+  66.217.35.113                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   211.9.156.77                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.26.222.13                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.78.247.22                    4                                                          File does not exist: /var/www/html/awstats/awstats.pl
+218.153.178.199                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 67.188.226.192                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    67.84.82.90                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   219.77.36.81                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.90.168.42                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  209.6.238.179                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.58.136.11                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  66.217.36.212                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  80.55.222.242                    4                                                          File does not exist: /var/www/html/awstats/awstats.pl
+    213.56.42.7                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+218.103.154.227                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  221.15.35.126                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  70.113.52.160                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 221.208.150.30                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 193.224.164.47                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+221.221.159.103                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 221.215.149.42                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 212.217.69.154                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  70.111.95.205                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 68.161.247.244                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 194.106.165.14                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+     83.114.8.4                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  219.218.0.118                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  81.66.182.131                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  24.130.216.40                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   70.111.92.26                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.63.109.81                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   61.151.191.3                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  221.146.1.119                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   61.185.32.30                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   24.10.57.249                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   60.176.80.31                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+     64.86.51.2                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   65.69.85.193                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+221.201.194.165                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  69.218.26.212                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 218.27.150.162                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   68.90.77.146                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 218.169.113.79                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 24.167.104.187                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 218.244.197.34                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.24.170.69                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.58.63.241                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 219.236.211.74                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    71.16.50.10                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  222.134.69.86                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+218.169.115.156                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+172.144.159.155                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    66.56.19.78                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 201.138.209.64                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.10.61.141                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    68.45.54.57                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  61.142.136.20                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   220.93.65.11                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+220.176.190.155                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 172.152.131.48                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 24.163.159.161                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    67.49.8.195                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  218.87.132.28                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  68.251.32.120                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  24.119.94.130                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 83.112.146.206                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+   66.217.34.41                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  85.226.115.57                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+ 218.26.162.216                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+    61.109.45.7                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  71.109.224.84                    4                                                            File does not exist: /var/www/html/scripts/root.exe
+  66.211.138.29                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.78.247.23                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   61.70.233.24                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 84.179.245.185                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.26.165.18                    3                                                            File does not exist: /var/www/html/scripts/root.exe
+   211.21.77.62                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+   65.69.87.247                    3                                                            File does not exist: /var/www/html/scripts/root.exe
+   200.75.61.74                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.78.247.25                    3                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.78.247.21                    2                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 210.22.201.118                    2                                                            File does not exist: /var/www/html/scripts/root.exe
+  62.118.19.122                    2                                                                    File does not exist: /var/www/html/_vti_bin
+220.246.168.124                    2                                                            File does not exist: /var/www/html/scripts/root.exe
+  62.221.237.83                    2                                  Invalid method in request get /scripts/..%35c../winnt/system32/cmd.exe?/c+dir
+ 63.203.254.140                    2                             Invalid method in request get /scripts/.%252e/.%252e/winnt/system32/cmd.exe?/c+dir
+  68.218.115.44                    2                                                            File does not exist: /var/www/html/scripts/root.exe
+ 66.173.222.134                    2                                                                    File does not exist: /var/www/html/_vti_bin
+ 203.242.62.249                    2                                                                    File does not exist: /var/www/html/_vti_bin
+220.113.173.164                    2                                                            File does not exist: /var/www/html/scripts/root.exe
+ 218.169.108.93                    2                                                            File does not exist: /var/www/html/scripts/root.exe
+  201.17.145.38                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 220.228.80.199                    1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+ 12.216.230.125                    1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+  63.160.17.140                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 63.197.230.242                    1                                Invalid method in request get /scripts/..%c1%9c../winnt/system32/cmd.exe?/c+dir
+   64.60.251.53                    1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+   64.147.69.59                    1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+ 71.208.206.178                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 140.127.43.150                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  207.38.249.20                    1                                                                    File does not exist: /var/www/html/_vti_bin
+     61.72.66.8                    1                                   Invalid method in request get /scripts/..%5c../winnt/system32/cmd.exe?/c+dir
+  207.181.126.3                    1          Invalid method in request get /scripts/..%c0%af../..%c0%af../..%c0%af../winnt/system32/cmd.exe?/c+dir
+ 210.22.201.125                    1                                                                       File does not exist: /var/www/html/msadc
+   68.251.35.98                    1                                                            File does not exist: /var/www/html/scripts/root.exe
+ 211.211.14.224                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  218.78.247.24                    1                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.78.247.29                    1                                                          File does not exist: /var/www/html/awstats/awstats.pl
+  218.78.247.26                    1                                                          File does not exist: /var/www/html/awstats/awstats.pl
+ 200.179.209.50                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 210.22.201.119                    1                                                                       File does not exist: /var/www/html/MSADC
+  218.78.247.28                    1                                                   script not found or unable to stat: /var/www/cgi-bin/awstats
+  68.47.134.229                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 213.205.73.192                    1 Invalid method in request get /scripts/..%e0%80%af../..%e0%80%af../..%e0%80%af../winnt/system32/cmd.exe?/c+dir
+ 198.180.132.39                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 201.252.246.11                    1                             Invalid method in request get /scripts/.%252e/.%252e/winnt/system32/cmd.exe?/c+dir
+   66.178.23.14                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 140.127.43.231                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  62.118.216.54                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 150.161.187.25                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 61.109.224.194                    1                                                                    File does not exist: /var/www/html/_vti_bin
+   64.52.185.24                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 61.142.124.106                    1                                                            File does not exist: /var/www/html/scripts/root.exe
+  65.199.19.164                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  83.173.150.63                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 62.212.108.245                    1                                                          File does not exist: /var/www/html/awstats/awstats.pl
+200.162.114.135                    1                                                         Invalid method in request get /scripts/root.exe?/c+dir
+  63.99.211.195                    1                                                         Invalid method in request get /scripts/root.exe?/c+dir
+   85.69.89.232                    1                                                         Invalid method in request get /scripts/root.exe?/c+dir
+  85.204.240.91                    1                                                                    File does not exist: /var/www/html/_vti_bin
+216.204.128.187                    1                                                         Invalid method in request get /scripts/root.exe?/c+dir
+ 209.195.166.17                    1                                                         Invalid method in request get /scripts/root.exe?/c+dir
+  220.79.229.83                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 66.188.165.221                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 218.148.201.23                    1                                                                    File does not exist: /var/www/html/_vti_bin
+218.157.154.234                    1                                                                    File does not exist: /var/www/html/_vti_bin
+    84.54.10.76                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  63.166.242.60                    1                                                                    File does not exist: /var/www/html/_vti_bin
+  68.251.66.100                    1                                                            File does not exist: /var/www/html/scripts/root.exe
+   86.107.33.20                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 81.182.193.240                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 208.36.232.200                    1                                                                    File does not exist: /var/www/html/_vti_bin
+ 200.172.22.150                    1                                                                    File does not exist: /var/www/html/_vti_bin
+   61.19.188.17                    1                                                                    File does not exist: /var/www/html/_vti_bin
+   65.69.86.207                    1                                                            File does not exist: /var/www/html/scripts/root.exe
+   213.61.135.6                    1                             Invalid method in request get /scripts/.%252e/.%252e/winnt/system32/cmd.exe?/c+dir
+
+ [!] Forbidden:
+None detected.
+
+ [!] Suspicious:
+None detected.
+
+ [!] Id Alerts:
+None detected.
+
+END OF REPORT

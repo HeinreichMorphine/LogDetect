@@ -133,11 +133,16 @@ class App(ctk.CTk):
 
         # Threat Summary
         self.lbl_threat_summary = ctk.CTkLabel(self.load_frame, text="Threat Summary: Waiting for file...", text_color="gray", font=ctk.CTkFont(size=14, weight="bold"))
-        self.lbl_threat_summary.grid(row=7, column=0, padx=20, pady=(5, 10))
+        self.lbl_threat_summary.grid(row=7, column=0, padx=20, pady=(5, 5))
+
+        # Progress Bar
+        self.progress_bar = ctk.CTkProgressBar(self.load_frame, width=400, height=15, corner_radius=10, progress_color=COLORS["secondary"])
+        self.progress_bar.grid(row=8, column=0, padx=20, pady=(0, 20))
+        self.progress_bar.set(0) # Start at 0
 
         # CoC Log Preview
         lbl_coc = ctk.CTkLabel(self.load_frame, text="Chain of Custody Log:", anchor="w", text_color=COLORS["text_light"])
-        lbl_coc.grid(row=8, column=0, padx=20, pady=(20, 5), sticky="w")
+        lbl_coc.grid(row=9, column=0, padx=20, pady=(20, 5), sticky="w")
         
         self.txt_coc = ctk.CTkTextbox(self.load_frame, height=180)
         self.txt_coc.grid(row=9, column=0, padx=20, pady=10, sticky="ew")
@@ -210,28 +215,17 @@ class App(ctk.CTk):
             if not hv.empty:
                 threats.append(f"High Volume IPs ({len(hv)})")
                 
-            # Check Brute Force
-            bf = self.log_analyzer.detect_brute_force()
-            if not bf.empty:
-                threats.append(f"Brute Force ({len(bf)} IPs)")
-                
-            # Check Exfiltration
-            exfil = self.log_analyzer.detect_large_responses()
-            if not exfil.empty:
-                threats.append(f"Data Exfiltration ({len(exfil)} events)")
-                
-            # Check Suspicious UAs
-            sus_ua = self.log_analyzer.detect_suspicious_user_agents()
-            if not sus_ua.empty:
-                threats.append(f"Suspicious UAs ({len(sus_ua)})")
-            
-            # Check IDS Alerts (New)
-            if hasattr(self.log_analyzer, 'detect_ids_alerts'):
-                ids_alerts = self.log_analyzer.detect_ids_alerts()
-                if not ids_alerts.empty:
-                    # Sum counts to get total alerts
-                    total_alerts = ids_alerts['count'].sum()
-                    threats.append(f"IDS Alerts ({total_alerts})")
+            # Check Traversal
+            if hasattr(self.log_analyzer, 'detect_directory_traversal'):
+                 dt = self.log_analyzer.detect_directory_traversal()
+                 if not dt.empty:
+                     threats.append(f"Directory Traversal ({len(dt)})")
+
+            # Check Vuln Scan
+            if hasattr(self.log_analyzer, 'detect_vuln_scanning'):
+                 vs = self.log_analyzer.detect_vuln_scanning()
+                 if not vs.empty:
+                     threats.append(f"Vuln Scanning ({len(vs)})")
 
             # Update UI
             if threats:
@@ -241,11 +235,74 @@ class App(ctk.CTk):
                 self.lbl_threat_summary.configure(text="No Threats Detected (Clean)", text_color="green")
             
             self.refresh_coc()
+            
+            # Optimization
+            self.prefetch_geolocation()
+            
+            self.update_report_preview()
             messagebox.showinfo("Success", "File loaded, preserved, and analyzed successfully!")
             
         except Exception as e:
             self.lbl_threat_summary.configure(text="Error during scan", text_color="red")
             messagebox.showerror("Error", str(e))
+
+    # Speed Optimization: Pre-fetch Geo for top threats so Dashboard is instant
+    def prefetch_geolocation(self):
+        """Background fetch of GeoIP for top threats with Progress Feedback."""
+        try:
+            self.lbl_threat_summary.configure(text="Fetching Geolocation Data (Background)...", text_color="orange")
+            self.update_idletasks()
+            
+            targets = set()
+            
+            # 1. High Volume Candidates (Top 50)
+            hv = self.log_analyzer.detect_high_volume_ips()
+            if not hv.empty:
+                targets.update(hv['ip'].head(50))
+                
+            # 2. Risk Score Candidates (Top 50)
+            risks = self.log_analyzer.calculate_risk_score()
+            if not risks.empty:
+                targets.update(risks['ip'].head(50))
+            
+            # 3. Directory Traversal (Top 50)
+            if hasattr(self.log_analyzer, 'detect_directory_traversal'):
+                dt = self.log_analyzer.detect_directory_traversal()
+                if not dt.empty:
+                    targets.update(dt['ip'].value_counts().head(50).index)
+
+            # 4. Vuln Scanning (Top 50)
+            if hasattr(self.log_analyzer, 'detect_vuln_scanning'):
+                 vs = self.log_analyzer.detect_vuln_scanning()
+                 if not vs.empty:
+                     targets.update(vs['ip'].value_counts().head(50).index)
+            
+            # Fetch with Progress
+            total = len(targets)
+            done = 0
+            
+            # Reset Bar
+            self.progress_bar.set(0)
+            
+            for ip in list(targets):
+                self.log_analyzer.get_geolocation(ip)
+                done += 1
+                
+                # Update Bar & Text
+                progress = done / total if total > 0 else 1
+                if done % 2 == 0 or done == total: # Update frequently enough for smooth visual
+                    self.lbl_threat_summary.configure(text=f"Fetching Geolocation... ({done}/{total})", text_color="orange")
+                    self.progress_bar.set(progress)
+                    self.update_idletasks()
+            
+            self.lbl_threat_summary.configure(text="Scan Complete. Geo Data Ready.", text_color="green")
+            self.progress_bar.set(1) # Ensure full bar
+            
+            # Save Cache to Disk
+            self.log_analyzer.save_cache()
+                
+        except Exception as e:
+            print(f"Prefetch error: {e}")
 
     def refresh_coc(self):
         self.txt_coc.delete("0.0", "end")
@@ -267,46 +324,25 @@ class App(ctk.CTk):
         # Style dict for analysis buttons
         btn_style = {"corner_radius": 15, "fg_color": COLORS["bg_card"], "hover_color": COLORS["secondary"], "border_color": COLORS["primary"], "border_width": 1, "height": 50, "font": ctk.CTkFont(size=13)}
 
-        btn_high_vol = ctk.CTkButton(controls_frame, text="High Volume IPs", command=self.check_high_volume, **btn_style)
-        btn_high_vol.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
-
-        btn_forbidden = ctk.CTkButton(controls_frame, text="Forbidden Files", command=self.check_forbidden, **btn_style)
-        btn_forbidden.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-
-        btn_errors = ctk.CTkButton(controls_frame, text="Error Analysis", command=self.check_errors, **btn_style)
-        btn_errors.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
-        
-        btn_suspicious = ctk.CTkButton(controls_frame, text="Suspicious Agents", command=self.check_suspicious, **btn_style)
-        btn_suspicious.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
-
-        btn_exfil = ctk.CTkButton(controls_frame, text="Data Exfiltration", command=self.check_exfiltration, **btn_style)
-        btn_exfil.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-
-        btn_brute = ctk.CTkButton(controls_frame, text="Brute Force", command=self.check_brute_force, **btn_style)
-        btn_brute.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-
-        # IDS Alerts (New)
-        btn_ids = ctk.CTkButton(controls_frame, text="IDS Alerts", command=self.check_ids_alerts, **btn_style)
-        btn_ids.grid(row=1, column=2, padx=5, pady=5, sticky="ew")
-        
-        # Risk Analysis (New - Imp 1)
+        # Row 0: Critical Analysis (Apache Focused)
         btn_risk = ctk.CTkButton(controls_frame, text="Risk Scoring", command=self.check_risk_score, 
-                                 corner_radius=15, fg_color="#E03131", hover_color="#C92A2A", border_color="white", border_width=1, height=50, font=ctk.CTkFont(size=13))
-        btn_risk.grid(row=1, column=3, padx=5, pady=5, sticky="ew")
+                                 corner_radius=15, fg_color="#E03131", hover_color="#C92A2A", border_color="white", border_width=1, height=50, font=ctk.CTkFont(size=13, weight="bold"))
+        btn_risk.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
-        # Timeline (New - Imp 5)
-        btn_timeline = ctk.CTkButton(controls_frame, text="Event Timeline", command=self.check_timeline,
-                                     corner_radius=15, fg_color="#1098AD", hover_color="#0B7285", border_color="white", border_width=1, height=50, font=ctk.CTkFont(size=13))
-        btn_timeline.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+        btn_dt = ctk.CTkButton(controls_frame, text="Dir Traversal", command=self.check_directory_traversal, **btn_style)
+        btn_dt.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+        
+        btn_vs = ctk.CTkButton(controls_frame, text="Vuln Scans", command=self.check_vuln_scans, **btn_style)
+        btn_vs.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
+        
+        btn_high_vol = ctk.CTkButton(controls_frame, text="High Volume IPs", command=self.check_high_volume, **btn_style)
+        btn_high_vol.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
-        # Export (New - Imp 3)
-        btn_csv = ctk.CTkButton(controls_frame, text="Export CSV Data", command=self.export_data_csv,
-                                corner_radius=15, fg_color="#F08C00", hover_color="#E67700", border_color="white", border_width=1, height=50, font=ctk.CTkFont(size=13))
-        btn_csv.grid(row=2, column=2, columnspan=2, padx=5, pady=5, sticky="ew")
+        # Removed Secondary/Tertiary Rows as per user request to "remove other functions"
 
         # Text Results (and Treeview container)
         self.results_frame = ctk.CTkFrame(self.analysis_frame, fg_color=COLORS["bg_card"], height=150)
-        self.results_frame.grid(row=3, column=0, padx=20, pady=10, sticky="nsew")
+        self.results_frame.grid(row=2, column=0, padx=20, pady=10, sticky="nsew") # Fix: Moved to row 2 to avoid overlapping controls
         self.results_frame.grid_columnconfigure(0, weight=1)
         self.results_frame.grid_rowconfigure(0, weight=1)
 
@@ -343,101 +379,101 @@ class App(ctk.CTk):
 
         # Chart Frame
         self.chart_frame = ctk.CTkFrame(self.analysis_frame, fg_color=COLORS["bg_card"], corner_radius=15)
-        self.chart_frame.grid(row=4, column=0, padx=20, pady=10, sticky="nsew")
+        self.chart_frame.grid(row=3, column=0, padx=20, pady=10, sticky="nsew") # Fix: Moved to row 3
+
+    # Helper to Assign ISP and Country (Focus on Geolocation)
+    def enrich_with_geo(self, df, ip_col='ip'):
+        if df.empty or ip_col not in df.columns:
+            return df
+        
+        # Add columns if missing
+        if 'country' not in df.columns: df['country'] = "Pending"
+        if 'isp' not in df.columns: df['isp'] = "Pending"
+        
+        # Fetch Geo for Top 10 items in display list to be responsive
+        # (Assuming df passed here is what we want to see)
+        for index, row in df.head(10).iterrows():
+             try:
+                 ip = row[ip_col]
+                 # Check cache or fetch
+                 c, i = self.log_analyzer.get_geolocation(ip)
+                 df.at[index, 'country'] = c
+                 df.at[index, 'isp'] = i
+             except: pass
+        
+        # Fill rest with Unknown or Pending
+        return df
 
     def check_high_volume(self):
         if self.log_analyzer:
             res = self.log_analyzer.detect_high_volume_ips()
+            if not res.empty:
+                res.columns = ['ip', 'count'] # Standardize
+                res = self.enrich_with_geo(res, 'ip')
+                res.columns = ['IP Address', 'Total Requests (Volume)', 'Country', 'ISP']
             self.display_result("High Volume IPs", res)
             
             # Graph
             if not res.empty:
-                self.plot_bar(res.head(10), 'ip', 'count', 'Top High Volume IPs')
+                self.plot_bar(res.head(10), 'IP Address', 'Total Requests (Volume)', 'Top High Volume IPs')
         else:
             self.display_result("Error", "No data loaded.")
 
-    def check_forbidden(self):
+    def check_directory_traversal(self):
         if self.log_analyzer:
-            res = self.log_analyzer.detect_forbidden_files()
-            self.display_result("Forbidden File Access", res)
-            
-            # Graph
-            if not res.empty:
-                chart_data = res['path'].value_counts().reset_index()
-                chart_data.columns = ['path', 'count']
-                self.plot_bar(chart_data.head(10), 'path', 'count', 'Top Forbidden Paths')
-        else:
-            self.display_result("Error", "No data loaded.")
-
-    def check_errors(self):
-        if self.log_analyzer:
-            res = self.log_analyzer.analyze_status_codes()
-            self.display_result("Error Code Distribution", res)
-            
-            # Graph
-            if not res.empty:
-                self.plot_bar(res, 'status', 'count', 'Error Codes')
-        else:
-            self.display_result("Error", "No data loaded.")
-
-    def check_suspicious(self):
-         if self.log_analyzer:
-            res = self.log_analyzer.detect_suspicious_user_agents()
-            self.display_result("Suspicious User Agents", res)
-            
-            # Graph
-            if not res.empty:
-                chart_data = res['user_agent'].str[:30].value_counts().reset_index()
-                chart_data.columns = ['user_agent', 'count']
-                self.plot_bar(chart_data.head(10), 'user_agent', 'count', 'Top Suspicious UAs')
-         else:
-            self.display_result("Error", "No data loaded.")
-
-    def check_exfiltration(self):
-         if self.log_analyzer:
-            # Default threshold 1MB (1,000,000 bytes)
-            res = self.log_analyzer.detect_large_responses(threshold_bytes=1000000)
-            self.display_result("Potential Data Exfiltration (>1MB Responses)", res)
-            
-            # Graph
-            if not res.empty:
-                 chart_data = res['ip'].value_counts().reset_index()
-                 chart_data.columns = ['ip', 'count']
-                 self.plot_bar(chart_data.head(10), 'ip', 'count', 'Top IPs (Large Responses)')
-         else:
-            self.display_result("Error", "No data loaded.")
-
-    def check_brute_force(self):
-         if self.log_analyzer:
-            res = self.log_analyzer.detect_brute_force()
-            self.display_result("Potential Brute Force (High Auth Failures)", res)
-            
-            # Graph
-            if not res.empty:
-                self.plot_bar(res.head(10), 'ip', 'count', 'Top Attacking IPs')
-         else:
-            self.display_result("Error", "No data loaded.")
-
-    def check_ids_alerts(self):
-         if self.log_analyzer:
-            if hasattr(self.log_analyzer, 'detect_ids_alerts'):
-                res = self.log_analyzer.detect_ids_alerts()
-                self.display_result("IDS Alerts", res)
-                
-                # Plot alerts by IP (top 10)
+            if hasattr(self.log_analyzer, 'detect_directory_traversal'):
+                res = self.log_analyzer.detect_directory_traversal()
+                # Aggregate for UI cleanliness (like we did for report)
                 if not res.empty:
-                     # Group by IP for simpler charting if multiple alerts per IP
-                     chart_data = res.groupby('ip')['count'].sum().reset_index()
-                     self.plot_bar(chart_data.head(10), 'ip', 'count', 'Top Source IPs (IDS Alerts)')
+                     summary = res['ip'].value_counts().reset_index()
+                     summary.columns = ['ip', 'count']
+                     summary = self.enrich_with_geo(summary, 'ip')
+                else:
+                     summary = res
+                
+                self.display_result("Directory Traversal Attempts", summary)
+                 # Graph
+                if not summary.empty:
+                    self.plot_bar(summary.head(10), 'ip', 'count', 'Top Traversal Sources')
             else:
-                 self.display_result("Error", "Analyzer does not support IDS alerts.")
-         else:
+                 self.display_result("Feature Missing", "Module update required.")
+        else:
             self.display_result("Error", "No data loaded.")
-            
+
+    def check_vuln_scans(self):
+        if self.log_analyzer:
+            if hasattr(self.log_analyzer, 'detect_vuln_scanning'):
+                res = self.log_analyzer.detect_vuln_scanning()
+                if not res.empty:
+                     summary = res['ip'].value_counts().reset_index()
+                     summary.columns = ['ip', 'count']
+                     summary = self.enrich_with_geo(summary, 'ip')
+                else:
+                     summary = res
+
+                self.display_result("Vulnerability Scanning (Known Files)", summary)
+                # Graph
+                if not summary.empty:
+                    self.plot_bar(summary.head(10), 'ip', 'count', 'Top Targeted Paths')
+            else:
+                 self.display_result("Feature Missing", "Module update required.")
+        else:
+            self.display_result("Error", "No data loaded.")
+
     def check_risk_score(self):
         # New Feature: Risk Scoring (Imp 1)
         if self.log_analyzer:
             res = self.log_analyzer.calculate_risk_score()
+            
+            # Clarify Columns for Display
+            if not res.empty:
+                res = res.rename(columns={
+                    'risk_score': 'Threat Score',
+                    'request_count': 'Traffic Volume',
+                    'ioc_match': 'Known Bad IP?',
+                    'severity': 'Severity Label'
+                })
+                
             self.display_result("Risk Scoring (Data Intelligence)", res)
             if not res.empty:
                  self.plot_bar(res.head(10), 'ip', 'risk_score', 'Top High Risk IPs')
@@ -462,7 +498,7 @@ class App(ctk.CTk):
                         self.display_result("Error", "No valid timestamps found for timeline.")
                         return
                     # Group by hour
-                    timeline = temp_df.set_index('timestamp').resample('H').size().reset_index(name='count')
+                    timeline = temp_df.set_index('timestamp').resample('h').size().reset_index(name='count')
                     self.display_result("Event Timeline (Hourly)", timeline)
                     self.plot_line(timeline, 'timestamp', 'count', 'Event Volume Over Time')
                  except Exception as e:
@@ -607,15 +643,20 @@ class App(ctk.CTk):
         lbl_title = ctk.CTkLabel(self.report_frame, text="Generate Report", font=ctk.CTkFont(size=24, weight="bold"), text_color=COLORS["text_light"])
         lbl_title.grid(row=0, column=0, padx=20, pady=20)
 
-        self.btn_export = ctk.CTkButton(self.report_frame, text="Export Text Report", command=self.export_report,
-                                        corner_radius=15, fg_color=COLORS["primary"], hover_color=COLORS["secondary"], width=200, height=40)
-        self.btn_export.grid(row=1, column=0, padx=20, pady=10)
+        # Export Buttons
+        btn_export_pdf = ctk.CTkButton(self.report_frame, text="Export PDF Report", command=self.export_pdf,
+                                   corner_radius=15, fg_color=COLORS["button_fg"], hover_color=COLORS["button_hover"], width=200, height=40)
+        btn_export_pdf.grid(row=1, column=0, padx=20, pady=(10, 5)) # Adjusted row and pady
+
+        btn_export_text = ctk.CTkButton(self.report_frame, text="Export Text Report", command=self.export_text,
+                                   corner_radius=15, fg_color=COLORS["secondary"], hover_color=COLORS["primary"], width=200, height=40)
+        btn_export_text.grid(row=2, column=0, padx=20, pady=(5, 10)) # Adjusted row and pady
         
         lbl_preview = ctk.CTkLabel(self.report_frame, text="Preview:", anchor="w", text_color=COLORS["text_light"])
-        lbl_preview.grid(row=2, column=0, padx=20, pady=(10,5), sticky="w")
+        lbl_preview.grid(row=3, column=0, padx=20, pady=(10,5), sticky="w") # Adjusted row
         
         self.txt_report_preview = ctk.CTkTextbox(self.report_frame, height=400, fg_color=COLORS["bg_card"], text_color=COLORS["text_light"])
-        self.txt_report_preview.grid(row=3, column=0, padx=20, pady=10, sticky="nsew")
+        self.txt_report_preview.grid(row=4, column=0, padx=20, pady=10, sticky="nsew")
 
 
 
@@ -626,36 +667,32 @@ class App(ctk.CTk):
             stats = self.log_analyzer.get_traffic_summary()
             risk = self.log_analyzer.calculate_risk_score()
             
-            # Additional Threat Stats for Preview
-            brute_force = self.log_analyzer.detect_brute_force()
+            # Supported Stats
             high_vol = self.log_analyzer.detect_high_volume_ips()
-            ids_alerts = pd.DataFrame()
-            if hasattr(self.log_analyzer, 'detect_ids_alerts'):
-                ids_alerts = self.log_analyzer.detect_ids_alerts()
             
-            forbidden = self.log_analyzer.detect_forbidden_files()
-            suspicious = self.log_analyzer.detect_suspicious_user_agents()
-            exfil = self.log_analyzer.detect_large_responses(threshold_bytes=1000000)
+            # New Checks
+            traversal = pd.DataFrame()
+            if hasattr(self.log_analyzer, 'detect_directory_traversal'):
+                 traversal = self.log_analyzer.detect_directory_traversal()
+            
+            vuln = pd.DataFrame()
+            if hasattr(self.log_analyzer, 'detect_vuln_scanning'):
+                 vuln = self.log_analyzer.detect_vuln_scanning()
 
-            preview = "--- FORENSIC REPORT PREVIEW ---\n\n"
-            
-            preview += "[EXECUTIVE SUMMARY]\n"
+            # Build String
+            preview = f"Log File: {os.path.basename(self.current_file_path)}\n"
             preview += f"Total Requests: {stats.get('Total Requests', 0)}\n"
-            preview += f"Malicious/Suspicious (HTTP): {stats.get('Suspicious (4xx)', 0) + stats.get('Server Errors (5xx)', 0)}\n"
+            preview += f"Error Rate: {stats.get('Failed/Error', 0)} errors\n\n"
             
-            # Always show these to confirm checks ran
-            preview += f"Brute Force IPs: {len(brute_force)}\n"
+            preview += "[THREAT SUMMARY]\n"
             preview += f"High Volume IPs: {len(high_vol)}\n"
-            preview += f"IDS Alerts: {len(ids_alerts)}\n"
-            preview += f"Forbidden File Access: {len(forbidden)}\n"
-            preview += f"Suspicious Agents: {len(suspicious)}\n"
-            preview += f"Potential Exfiltration: {len(exfil)}\n"
+            preview += f"Directory Traversal: {len(traversal)}\n"
+            preview += f"Vuln Scanning: {len(vuln)}\n"
 
             high_risk = len(risk[risk['risk_score'] > 50]) if not risk.empty else 0
             preview += f"CRITICAL/HIGH Risk IPs: {high_risk}\n"
-            preview += "\n"
 
-            preview += "[CHAIN OF CUSTODY (Last 5 Actions)]\n"
+            preview += "\n[CHAIN OF CUSTODY (Last 5 Actions)]\n"
             coc_lines = coc.strip().split('\n')
             # Filter distinct actions or just show last few valid lines
             valid_coc = [line for line in coc_lines if line.strip() and not line.startswith('=')]
@@ -663,7 +700,7 @@ class App(ctk.CTk):
                 preview += f"{line}\n"
             
             preview += "\n[FULL ANALYSIS]\n"
-            preview += "(See exported report for comprehensive details on Brute Force, Exfiltration, etc.)"
+            preview += "(See exported report for comprehensive details.)"
 
             self.txt_report_preview.delete("0.0", "end")
             self.txt_report_preview.insert("0.0", preview)
@@ -671,19 +708,16 @@ class App(ctk.CTk):
             self.txt_report_preview.delete("0.0", "end")
             self.txt_report_preview.insert("0.0", "Load and analyze a file first.")
 
-    def export_report(self):
+    def _prepare_report_data(self):
+        """Helper to gather and split data for PDF (Summary) and Text (Raw) reports."""
         if not self.log_analyzer:
-            messagebox.showwarning("Error", "No analysis data to report.")
-            return
+            return None, None, None, None, None
 
         coc = self.evidence_handler.get_coc_text()
         
-        ids_alerts = pd.DataFrame()
-        if hasattr(self.log_analyzer, 'detect_ids_alerts'):
-            ids_alerts = self.log_analyzer.detect_ids_alerts()
-
         # Integrity Check
         integrity_verified = False
+        current_hash = "N/A"
         try:
             current_hash = self.evidence_handler.calculate_hash(self.current_file_path)
             integrity_verified = (current_hash == self.file_hash)
@@ -695,35 +729,129 @@ class App(ctk.CTk):
             print(f"Integrity check error: {e}")
             integrity_verified = False
 
-        results = {
+        # Get Risk Scores (contains Geolocation for top IPs)
+        risk_df = self.log_analyzer.calculate_risk_score()
+        
+        # Helper to merge Geo info
+        def merge_geo(summary_df):
+            if summary_df.empty:
+                return summary_df
+            
+            # Initial merge
+            if not risk_df.empty and 'country' in risk_df.columns:
+                geo_info = risk_df[['ip', 'country', 'isp']]
+                merged = summary_df.merge(geo_info, on='ip', how='left')
+            else:
+                 merged = summary_df.copy()
+                 merged['country'] = "Pending"
+                 merged['isp'] = "Pending"
+
+            # FILL GAPS
+            count = 0
+            for index, row in merged.iterrows():
+                c = str(row.get('country', 'Pending'))
+                if c in ["Pending", "Unknown", "nan", "None"]:
+                    try:
+                        country, isp = self.log_analyzer.get_geolocation(row['ip'])
+                        merged.at[index, 'country'] = country
+                        merged.at[index, 'isp'] = isp
+                        self.update_idletasks()
+                        count += 1
+                    except Exception: 
+                        pass
+            
+            merged['country'].fillna('Unknown', inplace=True)
+            merged['isp'].fillna('Unknown', inplace=True)
+            return merged
+
+        # 1. Directory Traversal
+        dt_raw = self.log_analyzer.detect_directory_traversal() if hasattr(self.log_analyzer, 'detect_directory_traversal') else pd.DataFrame()
+        if not dt_raw.empty:
+            dt_summary = dt_raw['ip'].value_counts().reset_index()
+            dt_summary.columns = ['ip', 'traversal_attempts_count']
+            sample_paths = dt_raw.groupby('ip')['path'].first().reset_index()
+            dt_summary = dt_summary.merge(sample_paths, on='ip', how='left')
+            dt_summary.rename(columns={'path': 'sample_payload'}, inplace=True)
+            
+            dt_pdf = merge_geo(dt_summary.head(10))
+            
+            dt_text = dt_summary.copy()
+            if 'country' in dt_text.columns: dt_text.drop(columns=['country'], inplace=True)
+            if 'isp' in dt_text.columns: dt_text.drop(columns=['isp'], inplace=True)
+        else:
+            dt_pdf = pd.DataFrame()
+            dt_text = pd.DataFrame()
+
+        # 2. Vuln Scanning
+        vs_raw = self.log_analyzer.detect_vuln_scanning() if hasattr(self.log_analyzer, 'detect_vuln_scanning') else pd.DataFrame()
+        if not vs_raw.empty:
+             vs_summary = vs_raw['ip'].value_counts().reset_index()
+             vs_summary.columns = ['ip', 'scan_attempts_count']
+             sample_paths = vs_raw.groupby('ip')['path'].first().reset_index()
+             vs_summary = vs_summary.merge(sample_paths, on='ip', how='left')
+             vs_summary.rename(columns={'path': 'sample_target'}, inplace=True)
+             
+             vs_pdf = merge_geo(vs_summary.head(10))
+             
+             vs_text = vs_summary.copy()
+             if 'country' in vs_text.columns: vs_text.drop(columns=['country'], inplace=True)
+             if 'isp' in vs_text.columns: vs_text.drop(columns=['isp'], inplace=True)
+        else:
+             vs_pdf = pd.DataFrame()
+             vs_text = pd.DataFrame()
+             
+        # Risk Score Handling
+        risk_pdf = merge_geo(risk_df.head(10))
+        
+        risk_text = risk_df.copy()
+        if 'country' in risk_text.columns: risk_text.drop(columns=['country'], inplace=True, errors='ignore')
+        if 'isp' in risk_text.columns: risk_text.drop(columns=['isp'], inplace=True, errors='ignore')
+
+        # High Volume Handling
+        hv_pdf = self.log_analyzer.detect_high_volume_ips().head(10)
+        hv_text = self.log_analyzer.detect_high_volume_ips()
+
+        results_pdf = {
             'stats': self.log_analyzer.get_traffic_summary(),
-            'high_volume': self.log_analyzer.detect_high_volume_ips(),
-            'forbidden': self.log_analyzer.detect_forbidden_files(),
+            'high_volume': hv_pdf,
             'errors': self.log_analyzer.analyze_status_codes(),
-            'suspicious': self.log_analyzer.detect_suspicious_user_agents(),
-            'exfiltration': self.log_analyzer.detect_large_responses(threshold_bytes=1000000),
-            'brute_force': self.log_analyzer.detect_brute_force(),
-            'ids_alerts': ids_alerts,
-            'risk_score': self.log_analyzer.calculate_risk_score()
+            'risk_score': risk_pdf, 
+            'directory_traversal': dt_pdf, 
+            'vuln_scanning': vs_pdf,
+            'forbidden': pd.DataFrame(), 'suspicious': pd.DataFrame(), 'id_alerts': pd.DataFrame()
         }
         
-        # 1. Gather Metadata for PDF Report
+        results_text = {
+            'stats': self.log_analyzer.get_traffic_summary(),
+            'high_volume': hv_text,
+            'errors': self.log_analyzer.analyze_status_codes(),
+            'risk_score': risk_text, 
+            'directory_traversal': dt_text, 
+            'vuln_scanning': vs_text,
+            'forbidden': pd.DataFrame(), 'suspicious': pd.DataFrame(), 'id_alerts': pd.DataFrame()
+        }
+        
+        return results_pdf, results_text, integrity_verified, coc, current_hash
+
+    def export_pdf(self):
+        results_pdf, _, integrity_verified, coc, current_hash = self._prepare_report_data()
+        if not results_pdf:
+            messagebox.showwarning("Error", "No analysis data to report.")
+            return
+
         try:
             file_size = os.path.getsize(self.current_file_path)
-            hostname = socket.gethostname()
-            
             scan_end = datetime.datetime.now()
             duration = "N/A"
             if self.scan_start_time:
                 delta = scan_end - self.scan_start_time
                 duration = str(delta).split('.')[0] # HH:MM:SS
                 
-            # 2. Generate PDF Report
             path = self.reporter.generate_pdf_report(
                 case_id=self.evidence_handler.case_id, 
                 coc_text=coc, 
                 file_hash=self.file_hash, 
-                analysis_results=results, 
+                analysis_results=results_pdf, 
                 integrity_verified=integrity_verified,
                 examiner_name=self.evidence_handler.investigator,
                 file_path_evidence=self.current_file_path,
@@ -731,17 +859,23 @@ class App(ctk.CTk):
                 scan_duration=duration,
                 egress_hash=current_hash if integrity_verified else "HASH_MISMATCH"
             )
-
-            # Optional: Generate Text backup (per requirements "A CSV/JSON version can be generated alongside")
-            # self.reporter.generate_text_report(self.evidence_handler.case_id, coc, self.file_hash, results, integrity_verified)
-            
             if path:
                 messagebox.showinfo("Report Generated", f"PDF Report saved to:\n{path}")
-            else:
-                messagebox.showerror("Error", "Failed to generate PDF report.")
-
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to gather report metadata: {e}")
+            messagebox.showerror("Export Error", str(e))
+
+    def export_text(self):
+        _, results_text, integrity_verified, coc, _ = self._prepare_report_data()
+        if not results_text:
+            messagebox.showwarning("Error", "No analysis data to report.")
+            return
+
+        try:
+            text_path = self.reporter.generate_text_report(self.evidence_handler.case_id, coc, self.file_hash, results_text, integrity_verified)
+            if text_path:
+                messagebox.showinfo("Report Generated", f"Text Report saved to:\n{text_path}")
+        except Exception as e:
+            messagebox.showerror("Export Error", str(e))
 
 if __name__ == "__main__":
     app = App()

@@ -2,3 +2,4 @@ cases/
 __pycache__/
 *.pyc
 .gemini/
+geo_cache.json

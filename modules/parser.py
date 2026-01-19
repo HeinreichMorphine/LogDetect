@@ -26,21 +26,7 @@ class LogParser:
         )
 
     def try_parse_structured(self, file_path):
-        # CSV
-        if file_path.lower().endswith('.csv'):
-            try:
-                df = pd.read_csv(file_path)
-                rename_map = {
-                    'IP_Address': 'ip', 'Timestamp': 'timestamp', 'Activity_Type': 'method',
-                    'Resource_Accessed': 'path', 'File_Size': 'size', 'Label': 'status_label',
-                    'User_Agent': 'user_agent'
-                }
-                df.rename(columns=rename_map, inplace=True)
-                self._normalize_columns(df)
-                return df, 0
-            except: pass
-            
-        # JSON
+        # JSON (Suricata eve.json, etc.)
         if file_path.lower().endswith(('.json', '.jsonl', '.log')):
             try:
                 try: df = pd.read_json(file_path, lines=True)

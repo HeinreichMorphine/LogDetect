@@ -15,14 +15,14 @@ LogDetect is a GUI-based forensic tool designed to analyze web server and securi
     pip install -r requirements.txt
     ```
 
-## � Web Server Log Analysis Forensic Scenarios
-To run the test cases, download the **Analysis Forensic Scenarios** dataset from Zenodo:
-[https://zenodo.org/records/5779411](https://zenodo.org/records/5779411)
+## 📂 Web Server Log Analysis Forensic Scenarios
+To run the test cases, use the provided `Apache.log` or datasets from **Loghub**:
+[https://github.com/logpai/loghub/tree/master/Apache](https://github.com/logpai/loghub/tree/master/Apache)
 
-*   **Scenario 1**: Webserver Attack (`scenario1/gather/webserver/logs/apache2`)
+*   **Scenario 1**: Webserver Attack (`Apache.log`)
 *   **Scenario 2**: Brute Force & IDS (`scenario2/gather/acme_mail/logs` & `scenario2/gather/cloud_share/logs/suricata`)
 
-## �🚀 How to Run
+## 🚀 How to Run
 
 Launch the application using Python:
 
@@ -39,31 +39,22 @@ Follow these steps to verify the tool's functionality with the provided scenario
 1.  Open **LogDetect**.
 2.  In the "Evidence Acquisition" tab, enter a Case ID and Investigator Name, then click **Set Case Details**.
 3.  Click **Select Log File**.
-4.  Navigate to: `Downloads > FORENSIC > scenario1 > gather > webserver > logs > apache2`.
-5.  Select: `cloud.company.cyberrange.at-access.log`.
+4.  Navigate to: `Downloads > FORENSIC`.
+5.  Select: `Apache.log`.
 6.  Go to the **Analysis Dashboard** tab.
-7.  Click **Check High Volume IPs** or **Suspicious Agents** to view stats and charts.
+7.  Click **"Dir Traversal"** or **"Vuln Scans"** to view detected attacks from IPs like `63.203.254.140`.
 
-### Scenario 2: Brute Force & IDS Alerts
-
-#### Case A: Authentication Logs (Syslog)
-1.  Click **Select Log File** again.
-2.  Navigate to: FORENSIC\scenario2\gather\acme_mail\logs`.
-3.  Select: `auth.log`.
-4.  On the **Analysis Dashboard**, click **Brute Force**.
-5.  *Result*: You should see detection of IP `192.42.1.22` with high authentication failures.
-
-#### Case B: Intrusion Detection (Suricata)
-1.  Click **Select Log File**.
-2.  Navigate to: FORENSIC\scenario2\gather\cloud_share\logs\suricata`.
-3.  Select: `fast.log`.
-4.  On the **Analysis Dashboard**, click **Check IDS Alerts**.
-5.  *Result*: You will see a list of intrusion alerts (e.g., `SURICATA TLS invalid handshake`) and a chart of top source IPs.
 
 ## 📊 Features
-*   **Chain of Custody**: Automatic SHA256 hashing and action logging.
-*   **Visualizations**: Downloadable charts for threat analysis.
-*   **Reporting**: Export findings to a text report with one click.
+*   **Instant Dashboard**: "Analysis Dashboard" loads instantly thanks to background pre-fetching.
+*   **Dual Reporting**: Export professional **PDF Reports** (Executive Summary) or raw **Text Reports** (Full Data) with one click.
+*   **Visual Feedback**: Real-time progress bar during evidence scanning.
+*   **Smart Caching**: Persistent `geo_cache.json` caches IP geolocation data, making re-analysis lightning fast.
+*   **Chain of Custody**: Automatic SHA256 hashing and action logging for forensic integrity.
+*   **Threat Detection**:
+    *   **High Volume IPs**: Detects DoS/Scanning attempts (Whitelisted IPs excluded).
+    *   **Risk Scoring**: Prioritizes threats based on error rates and attack patterns.
+    *   **Attack Signatures**: Identifies Directory Traversal and Vulnerability Scanning.
 
 ## 🐛 Reporting Bugs & Updates
 
